@@ -17,6 +17,14 @@ export default (req, res) => {
         }
     }
 
+    games[0].players = [
+        {
+            id: 1,
+            username: 'Enijar',
+            position: 'top'
+        }
+    ];
+
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(games));
 }

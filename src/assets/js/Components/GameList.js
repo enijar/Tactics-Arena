@@ -19,6 +19,8 @@ export default class GameList extends Component {
     }
 
     render() {
+        console.log(this.getFloorGames());
+
         return (
             <div className="GameList">
                 <div className="GameList__games">
@@ -29,12 +31,18 @@ export default class GameList extends Component {
                                     className="GameList__games-game-arena-top"
                                     onClick={() => this.props.context.setAvatar(index + 1, 'top')}
                                 >
+                                    {game.players.filter(player => player.position === 'top').map(player => (
+                                        <img src="img/unit/front.png" key={player.id}/>
+                                    ))}
                                 </div>
 
                                 <div
                                     className="GameList__games-game-arena-bottom"
                                     onClick={() => this.props.context.setAvatar(index + 1, 'bottom')}
                                 >
+                                    {game.players.filter(player => player.position === 'bottom').map(player => (
+                                        <img src="img/unit/back.png" key={player.id}/>
+                                    ))}
                                 </div>
                             </div>
                         </div>

@@ -30,6 +30,11 @@
           transition: opacity .2s linear;
           cursor: pointer;
 
+          img {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(45deg) scale(2) translate(4px, -35px);
+            pointer-events: none;
+          }
+
           &:hover {
             opacity: 0.7;
           }
