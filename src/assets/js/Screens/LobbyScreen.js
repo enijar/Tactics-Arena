@@ -5,7 +5,7 @@ import BaseScreen from "./BaseScreen";
 import Screen from "../Components/Screen";
 import GameList from "../Components/GameList";
 import PlayerList from "../Components/PlayerList";
-import Chat from "../Components/Chat";
+import Chat from "../Components/Chat/index";
 import LoadingOverlay from "../Components/LoadingOverlay";
 
 @AppContext

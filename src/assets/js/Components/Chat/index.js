@@ -1,8 +1,10 @@
 import React, {Component, createRef} from "react";
-import AppContext from "../Decorators/AppContext";
+import AppContext from "../../Decorators/AppContext";
+import config from "../../config";
+import Message from "./Message";
 
 @AppContext
-export default class Chat extends Component {
+export default class Index extends Component {
     messages = createRef();
 
     state = {
@@ -11,24 +13,25 @@ export default class Chat extends Component {
         scrollToBottom: true
     };
 
-    async componentDidMount() {
-        const {messages} = this.state;
+    componentDidMount() {
+        this.props.context.socket.on('message', this.appendMessage);
+    }
 
-        for (let i = 0; i < 20; i++) {
-            messages.push({
-                id: i + 1,
-                text: `Message ${i + 1}`,
-                time: '23:11',
-                user: {
-                    id: 1,
-                    username: 'Enijar'
-                }
-            });
+    componentWillUnmount() {
+        this.props.context.socket.off('message', this.appendMessage);
+    }
+
+    appendMessage = async message => {
+        const {messages} = this.state;
+        messages.push(message);
+
+        if (messages.length > config.maxLobbyMessages) {
+            messages.splice(messages.length - 1 - config.maxLobbyMessages, messages.length - config.maxLobbyMessages);
         }
 
         await this.setState({messages});
         this.scrollToBottom();
-    }
+    };
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -39,20 +42,12 @@ export default class Chat extends Component {
             return;
         }
 
-        const {messages} = this.state;
-
-        messages.push({
-            id: messages.length + 1,
-            text: message,
-            time: '23:11',
-            user: {
-                id: 1,
-                username: 'Enijar'
-            }
+        this.props.context.socket.emit('message', {
+            user: this.props.context.user,
+            text: message
         });
 
-        await this.setState({messages, message: ''});
-        this.scrollToBottom();
+        this.setState({message: ''});
     };
 
     handleChange = event => {
@@ -74,19 +69,7 @@ export default class Chat extends Component {
         return (
             <div className="Chat">
                 <div className="Chat__messages" ref={this.messages} onScroll={this.handleScroll}>
-                    {this.state.messages.map(message => (
-                        <div className="Chat__message" key={message.id}>
-                            <time className="Chat__message-time">
-                                {message.time}
-                            </time>
-                            <div className="Chat__message-user">
-                                {message.user.username}
-                            </div>
-                            <div className="Chat__message-text">
-                                {message.text}
-                            </div>
-                        </div>
-                    ))}
+                    {this.state.messages.map((message, index) => <Message key={index} message={message}/>)}
                 </div>
 
                 <div className="Chat__input">
@@ -96,6 +79,7 @@ export default class Chat extends Component {
                             placeholder="Enter your message..."
                             onChange={this.handleChange}
                             value={this.state.message}
+                            autoFocus
                         />
                     </form>
                 </div>

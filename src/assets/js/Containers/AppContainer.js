@@ -3,13 +3,18 @@ import {BrowserRouter} from "react-router-dom";
 import App from "../Components/App";
 import Context from "../Context/App";
 import config from "../config";
+import Socket from "../app/Socket";
 
 export default class AppContainer extends Component {
     state = {
         game: null,
         arena: null,
         floor: 1,
-        position: null
+        position: null,
+        user: {
+            id: 1,
+            username: 'Enijar'
+        }
     };
 
     getContext() {
@@ -17,8 +22,10 @@ export default class AppContainer extends Component {
             game: this.state.game,
             arena: this.state.arena,
             floor: this.state.floor,
+            user: this.state.user,
             changeFloor: this.changeFloor,
-            setAvatar: this.setAvatar
+            setAvatar: this.setAvatar,
+            socket: Socket()
         };
     }
 

@@ -1,8 +1,11 @@
 .Chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 1;
 
   &__messages {
-    max-height: 300px;
+    max-height: 250px;
     overflow: auto;
 
     &::-webkit-scrollbar {
