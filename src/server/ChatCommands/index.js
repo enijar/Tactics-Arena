@@ -9,6 +9,8 @@ export default message => {
 
     let [command, args] = message.split(/^\/w+/);
 
+    const isCommand = command.match(/^\//);
+
     command = command.replace(/^\//, '');
     command = (command || '').toLowerCase();
     args = (args || '').split(' ');
@@ -17,5 +19,5 @@ export default message => {
         return null;
     }
 
-    return commands[command](args);
+    return isCommand ? commands[command](args) : null;
 }
