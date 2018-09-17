@@ -1,0 +1,28 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 Chrome versions",
+            "last 2 FireFox versions",
+            "last 2 Safari versions",
+            "last 2 Edge versions",
+            "Explorer >= 11"
+          ]
+        },
+        "useBuiltIns": true
+      }
+    ],
+    "react"
+  ],
+  "ignore": [
+    "node_modules"
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-async-to-generator",
+    "transform-decorators-legacy"
+  ]
+}

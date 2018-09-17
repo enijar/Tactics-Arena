@@ -1,0 +1,59 @@
+.Chat {
+  flex: 1;
+
+  &__messages {
+    max-height: 300px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__message {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    margin-bottom: 0.5em;
+
+    &-time, &-user {
+      padding-right: 0.5em;
+    }
+
+    &-time {
+      font-style: italic;
+    }
+
+    &-user {
+      font-weight: bold;
+    }
+
+    &-text {
+      flex: 1;
+      padding-left: 0.5em;
+    }
+  }
+
+  &__input {
+    padding-top: 1em;
+
+    input {
+      display: block;
+      width: 100%;
+      font-size: 1rem;
+      border: 1px solid color(grey);
+      padding: 0.4em 0.7em;
+      background-color: color(dark-grey);
+      color: color(white);
+
+      &::placeholder {
+        opacity: 0.7;
+        color: color(white);
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

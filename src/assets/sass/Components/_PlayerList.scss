@@ -1,0 +1,45 @@
+.PlayerList {
+  display: inline-block;
+  overflow: auto;
+  max-height: 300px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &__inner {
+    padding: 1em;
+  }
+
+  &__player {
+    display: flex;
+    margin-bottom: 0.5em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &-username {
+      margin-left: 0.5em;
+      max-width: 100px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    &-status {
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      background-color: color(status-unknown);
+
+      &--online {
+        background-color: color(status-online);
+      }
+
+      &--idle {
+        background-color: color(status-idle);
+      }
+    }
+  }
+}

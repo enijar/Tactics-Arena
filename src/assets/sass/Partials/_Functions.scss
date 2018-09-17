@@ -1,0 +1,7 @@
+@function color($color) {
+  @if not map-has-key($colors, $color) {
+    @error "Color " + $color + " is not defined in the $colors map";
+  }
+
+  @return map-get($colors, $color);
+}

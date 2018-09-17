@@ -1,0 +1,7 @@
+/node_modules/
+/.idea/
+/build/
+/public/css/
+/public/js/
+.DS_Store
+*.log
