@@ -19,8 +19,6 @@ export default class GameList extends Component {
     }
 
     render() {
-        console.log(this.getFloorGames());
-
         return (
             <div className="GameList">
                 <div className="GameList__games">
