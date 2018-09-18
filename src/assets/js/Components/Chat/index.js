@@ -4,7 +4,7 @@ import config from "../../config";
 import Message from "./Message";
 
 @AppContext
-export default class Index extends Component {
+export default class Chat extends Component {
     messages = createRef();
 
     state = {
