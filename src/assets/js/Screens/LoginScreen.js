@@ -5,20 +5,84 @@ import Screen from "../Components/Screen";
 
 @AppContext
 export default class LoginScreen extends BaseScreen {
+    state = {
+        registrationForm: false,
+        data: {
+            name: '',
+            password: '',
+            passwordConfirm: ''
+        }
+    };
+
     handleSubmit = event => {
         event.preventDefault();
         console.info('TODO: LoginScreen -> handle login submit');
+        console.debug(this.state);
+    };
+
+    handleChange = event => {
+        const {data} = this.state;
+        data[event.target.name] = event.target.value;
+        this.setState({data});
+    };
+
+    toggleRegistrationForm = () => {
+        this.setState({registrationForm: !this.state.registrationForm});
     };
 
     render() {
         return (
-            <Screen>
-                <h1>Login Screen</h1>
+            <Screen name="LoginScreen">
+                <form
+                    onSubmit={this.handleSubmit}
+                    className={`LoginScreen__form ${this.state.registrationForm ? 'LoginScreen__form--registration' : ''}`}
+                >
+                    <div className="LoginScreen__form-field">
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            autoComplete="current-username"
+                            tabIndex={1}
+                            value={this.state.data.name}
+                            onChange={this.handleChange}
+                        />
+                    </div>
 
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" name="username" placeholder="Username" autoComplete="username"/>
-                    <input type="password" name="password" placeholder="Password" autoComplete="current-password"/>
-                    <button>Login</button>
+                    <div className="LoginScreen__form-field">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            autoComplete="current-password"
+                            tabIndex={2}
+                            value={this.state.data.password}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+
+                    {this.state.registrationForm && (
+                        <div className="LoginScreen__form-field">
+                            <label htmlFor="passwordConfirm">Confirm Password</label>
+                            <input
+                                type="password"
+                                name="passwordConfirm"
+                                id="passwordConfirm"
+                                tabIndex={3}
+                                value={this.state.data.passwordConfirm}
+                                onChange={this.handleChange}
+                            />
+                        </div>
+                    )}
+
+                    <div className="LoginScreen__form-actions">
+                        <button type="button" onClick={this.toggleRegistrationForm}>
+                            {this.state.registrationForm ? 'Back' : 'New Account'}
+                        </button>
+                        <button type="submit">Login</button>
+                    </div>
                 </form>
             </Screen>
         );

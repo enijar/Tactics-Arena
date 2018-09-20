@@ -1,3 +1,76 @@
 .LoginScreen {
-  //
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__form {
+    width: 100%;
+    max-width: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #a4a39b;
+
+    &--registration {
+      button {
+        width: 90px;
+      }
+    }
+
+    &-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 0.65em;
+
+      label {
+        flex: 1;
+        text-align: right;
+        margin-right: 0.65em;
+        font-size: 1.2em;
+      }
+
+      input {
+        border: 1px solid #464646;
+        background-color: #303030;
+        padding: 0.5em 0.7em;
+        color: #fff;
+        font-size: 1em;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    &-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-end;
+
+      button {
+        border: 1px solid #ada99c;
+        background: linear-gradient(90deg, #8a8370, #695a41, #87816b);
+        color: #d6c6a5;
+        font-size: 1em;
+        padding: 0.2em 0.62em;
+        cursor: pointer;
+
+        &:first-child {
+          margin-right: 0.65em;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          background: linear-gradient(90deg, #695a41, #8a8370, #695a41);
+        }
+      }
+    }
+  }
 }

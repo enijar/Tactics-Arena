@@ -37,7 +37,7 @@ export default class LobbyScreen extends BaseScreen {
 
     render() {
         return (
-            <Screen>
+            <Screen name="LobbyScreen">
                 <LoadingOverlay loading={this.state.loading}/>
 
                 <GameList floor={this.state.floor} games={this.state.games}/>
