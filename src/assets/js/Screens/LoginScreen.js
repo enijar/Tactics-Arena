@@ -40,6 +40,7 @@ export default class LoginScreen extends BaseScreen {
                     <div className="LoginScreen__form-field">
                         <label htmlFor="name">Name</label>
                         <input
+                            maxLength={15}
                             type="text"
                             name="name"
                             id="name"
