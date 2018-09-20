@@ -70,6 +70,7 @@ export default class LoginScreen extends BaseScreen {
                                 type="password"
                                 name="passwordConfirm"
                                 id="passwordConfirm"
+                                autoComplete="new-password"
                                 tabIndex={3}
                                 value={this.state.data.passwordConfirm}
                                 onChange={this.handleChange}
