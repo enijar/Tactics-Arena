@@ -5,3 +5,4 @@
 /public/js/
 .DS_Store
 *.log
+env.json

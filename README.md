@@ -4,15 +4,27 @@ Put your tactics to the test against other players in a 1v1, chess-like arena!
 
 ### Quick Start
 
-To get a local instance of the game up-and-running, run the following commands.
+To get a local instance of the game up-and-running, follow the setups outlines below.
+
+Create the env.json file from the example.
+
+```bash
+cp env.example.json env.json
+```
+
+Create a MySQL database, then update the details inside the env.json file.
+
+Finally run the following commands.
 
 ```bash
 npm install
 npm run assets:build
 npm run start
+./bin/migrate refresh
 ```
 
-This will install all the game dependencies, build the assets and server, then serve the game.
+This will install all the game dependencies, build the assets and server, serve the game,
+and run the migrations to setup the database.
 
 Open [http://localhost:3000](http://localhost:3000) to see the game.
 

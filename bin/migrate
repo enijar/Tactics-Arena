@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+const path = require('path');
+const mysql = require('mysql');
+const migration = require('mysql-migrations');
+const env = require('../env');
+
+const connection = mysql.createPool({
+    connectionLimit: 10,
+    host: env.db.host,
+    user: env.db.user,
+    password: env.db.password,
+    database: env.db.database
+});
+
+migration.init(connection, path.resolve(__dirname, '..', 'src', 'server', 'migrations'));
