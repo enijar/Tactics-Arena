@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import FindUser from "../Functions/FindUser";
 
 const unauthorized = (req, res) => {
-    console.error(`Unauthorized access for ${req.body.name}`);
+    console.error(`Unauthorized access for "${req.body.name}"`);
 
     res.status(401);
     res.send(JSON.stringify({success: false, errors: ['Incorrect login, try again']}));
