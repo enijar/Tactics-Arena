@@ -8,6 +8,7 @@ import Request from "../app/Request";
 export default class LoginScreen extends BaseScreen {
     state = {
         registrationForm: false,
+        errors: [],
         data: {
             name: '',
             password: '',
@@ -19,7 +20,10 @@ export default class LoginScreen extends BaseScreen {
         event.preventDefault();
 
         const res = await Request.post(`/api/${this.state.registrationForm ? 'register' : 'login'}`, this.state.data);
-        console.log(res);
+
+        if (!res.success) {
+            this.setState({errors: res.errors || []});
+        }
     };
 
     handleChange = event => {
@@ -39,6 +43,16 @@ export default class LoginScreen extends BaseScreen {
                     onSubmit={this.handleSubmit}
                     className={`LoginScreen__form ${this.state.registrationForm ? 'LoginScreen__form--registration' : ''}`}
                 >
+                    {this.state.errors.length > 0 && (
+                        <div className="LoginScreen__errors">
+                            {this.state.errors.map((error, index) => (
+                                <div key={index} className="LoginScreen__errors-error">
+                                    {error}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
                     <div className="LoginScreen__form-field">
                         <label htmlFor="name">Name</label>
                         <input
