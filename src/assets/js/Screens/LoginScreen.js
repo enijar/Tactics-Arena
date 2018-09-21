@@ -2,6 +2,7 @@ import React from "react";
 import AppContext from "../Decorators/AppContext";
 import BaseScreen from "./BaseScreen";
 import Screen from "../Components/Screen";
+import Request from "../app/Request";
 
 @AppContext
 export default class LoginScreen extends BaseScreen {
@@ -14,10 +15,11 @@ export default class LoginScreen extends BaseScreen {
         }
     };
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
-        console.info('TODO: LoginScreen -> handle login submit');
-        console.debug(this.state);
+
+        const res = await Request.post(`/api/${this.state.registrationForm ? 'register' : 'login'}`, this.state.data);
+        console.log(res);
     };
 
     handleChange = event => {
