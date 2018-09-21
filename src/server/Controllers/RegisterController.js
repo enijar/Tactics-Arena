@@ -1,23 +1,20 @@
 import bcrypt from "bcrypt";
 import FindUser from "../Functions/FindUser";
 import CreateUser from "../Functions/CreateUser";
+import app from "../app/index";
+import config from "../../common/config";
 
 const SALT_ROUNDS = 10;
 
 export default async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
-    // Validate data exists
-    if (!req.body.hasOwnProperty('name') || !req.body.hasOwnProperty('password') ||!req.body.hasOwnProperty('passwordConfirm')) {
-        res.status(400);
-        res.send(JSON.stringify({success: false, errors: ['Enter a name, password and confirm']}));
-        return;
-    }
+    const validation = app.Validator.validate(req.body, config.validators.registration(req.body));
 
-    // Validate passwords match
-    if (req.body.password !== req.body.passwordConfirm) {
+    // Validate validation passed
+    if (!validation.passed) {
         res.status(400);
-        res.send(JSON.stringify({success: false, errors: ["Passwords don't match"]}));
+        res.send(JSON.stringify({success: false, errors: validation.errors}));
         return;
     }
 
