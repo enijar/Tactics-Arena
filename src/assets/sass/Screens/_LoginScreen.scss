@@ -17,7 +17,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #a4a39b;
+    color: color(form-input);
+    max-width: 365px;
+    width: 100%;
 
     &--registration {
       button {
@@ -40,10 +42,10 @@
       }
 
       input {
-        border: 1px solid #464646;
-        background-color: #303030;
+        border: 1px solid color(input-border);
+        background-color: color(input-background);
         padding: 0.5em 0.7em;
-        color: #fff;
+        color: color(white);
         font-size: 1em;
 
         &:focus {
@@ -60,7 +62,7 @@
 
       button {
         border: 1px solid #ada99c;
-        background: linear-gradient(90deg, #8a8370, #695a41, #87816b);
+        background: linear-gradient(90deg, color(login-button-gradient-1), color(login-button-gradient-2), color(login-button-gradient-3));
         color: #d6c6a5;
         font-size: 1em;
         padding: 0.2em 0.62em;
