@@ -1,4 +1,4 @@
-import React, {createRef} from "react";
+import React from "react";
 import {withRouter} from "react-router-dom";
 import AppContext from "../Decorators/AppContext";
 import BaseScreen from "./BaseScreen";
