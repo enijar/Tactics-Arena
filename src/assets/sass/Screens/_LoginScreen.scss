@@ -5,10 +5,12 @@
 
   &__errors {
     margin-bottom: 1em;
+    text-align: right;
+    width: 100%;
 
     &-error {
       color: color(error);
-      margin-bottom: 1em;
+      margin-bottom: 0.3em;
     }
   }
 
