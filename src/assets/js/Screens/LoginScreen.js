@@ -1,10 +1,14 @@
 import React from "react";
+import {withRouter} from "react-router-dom";
 import AppContext from "../Decorators/AppContext";
 import BaseScreen from "./BaseScreen";
 import Screen from "../Components/Screen";
 import Request from "../app/Request";
+import Validator from "../../../common/Validator";
+import config from "../../../common/config";
 
 @AppContext
+@withRouter
 export default class LoginScreen extends BaseScreen {
     state = {
         registrationForm: false,
@@ -19,11 +23,23 @@ export default class LoginScreen extends BaseScreen {
     handleSubmit = async event => {
         event.preventDefault();
 
+        const validation = Validator.validate(this.state.data, config.validators.registration(this.state.data));
+
+        if (!validation.passed) {
+            this.setState({errors: validation.errors});
+            return;
+        }
+
+        await this.setState({errors: []});
         const res = await Request.post(`/api/${this.state.registrationForm ? 'register' : 'login'}`, this.state.data);
 
         if (!res.success) {
-            this.setState({errors: res.errors || []});
+            this.setState({errors: res.errors});
+            return;
         }
+
+        await this.setState({errors: []});
+        this.props.history.push('/lobby');
     };
 
     handleChange = event => {
