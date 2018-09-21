@@ -6,7 +6,7 @@
   "scripts": {
     "assets:watch": "npx webpack --mode development --watch --progress --hide-modules",
     "assets:build": "npx webpack --mode production --progress --hide-modules",
-    "server:watch": "npx nodemon --watch src/server --exec \"npm run server:build && npm start\"",
+    "server:watch": "npx nodemon --watch src/server src/server --exec babel-node --presets @babel/preset-env",
     "server:build": "npx babel src --out-dir build --ignore src/assets --presets @babel/preset-env",
     "build": "npm run server:build && npm run assets:build",
     "start": "npm run server:build && node build/server",
