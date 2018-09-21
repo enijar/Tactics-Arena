@@ -22,7 +22,7 @@ export default async (req, res) => {
     }
 
     // Validate name doesn't already exist in DB
-    if (FindUser(req.body.name)) {
+    if (await FindUser(req.body.name)) {
         res.status(400);
         res.send(JSON.stringify({success: false, errors: ['Username already taken']}));
         return;
@@ -31,7 +31,7 @@ export default async (req, res) => {
     // Store name and hashed password in DB
     try {
         const password = await bcrypt.hash(req.body.password, SALT_ROUNDS);
-        CreateUser({name: req.body.name, password});
+        await CreateUser({name: req.body.name, password});
         res.send(JSON.stringify({success: true}));
     } catch (err) {
         console.error(err);

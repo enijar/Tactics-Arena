@@ -18,7 +18,7 @@ export default async (req, res) => {
         return;
     }
 
-    const user = FindUser(req.body.name);
+    const user = await FindUser(req.body.name);
 
     // Validate name exists in DB
     if (!user) {
@@ -28,8 +28,6 @@ export default async (req, res) => {
 
     try {
         const authorized = await bcrypt.compare(req.body.password, user.password);
-
-        console.log('authorized', authorized);
 
         if (!authorized) {
             unauthorized(req, res);

@@ -1,15 +1,12 @@
-import fs from "fs";
-import path from "path";
+import Query from "./Query";
 
-export default user => {
-    const usersFile = path.resolve(__dirname, '..', 'data', 'users.json');
-
-    if (!fs.existsSync(usersFile)) {
-        fs.writeFileSync(usersFile, JSON.stringify([]), 'utf-8');
+export default async user => {
+    try {
+        await Query("insert into users (name, password, created_at, updated_at) values (?, ?, NOW(), NOW())", [
+            user.name,
+            user.password
+        ]);
+    } catch (err) {
+        console.error(`CreateUser query failed: "${err.message}"`);
     }
-
-    const users = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
-    users.push(user);
-
-    fs.writeFileSync(usersFile, JSON.stringify(users), 'utf-8');
 };

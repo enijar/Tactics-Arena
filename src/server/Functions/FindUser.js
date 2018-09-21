@@ -1,14 +1,13 @@
-import fs from "fs";
-import path from "path";
+import Query from "./Query";
 
-export default name => {
-    const usersFile = path.resolve(__dirname, '..', 'data', 'users.json');
+export default async name => {
+    let user = null;
 
-    if (!fs.existsSync(usersFile)) {
-        fs.writeFileSync(usersFile, JSON.stringify([]), 'utf-8');
+    try {
+        user = await Query("select * from users where name = ? limit 1", [name]);
+    } catch (err) {
+        console.error(`FindUser query failed: "${err.message}"`);
     }
 
-    const users = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
-
-    return users.find(user => user.name === name) || false;
+    return user;
 };
