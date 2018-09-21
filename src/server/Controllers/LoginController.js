@@ -26,6 +26,7 @@ export default async (req, res) => {
         return;
     }
 
+    // Attempt to login
     try {
         const authorized = await bcrypt.compare(req.body.password, user.password);
 
