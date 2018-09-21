@@ -11,7 +11,7 @@ import config from "../../../common/config";
 @withRouter
 export default class LoginScreen extends BaseScreen {
     state = {
-        registrationForm: false,
+        formType: 'login',
         errors: [],
         data: {
             name: '',
@@ -23,8 +23,8 @@ export default class LoginScreen extends BaseScreen {
     handleSubmit = async event => {
         event.preventDefault();
 
-        const formType = this.state.registrationForm ? 'register' : 'login';
-        const validation = Validator.validate(this.state.data, config.validators[formType](this.state.data));
+        const {formType, data} = this.state;
+        const validation = Validator.validate(data, config.validators[formType](data));
 
         if (!validation.passed) {
             this.setState({errors: validation.getErrors()});
@@ -50,7 +50,7 @@ export default class LoginScreen extends BaseScreen {
     };
 
     toggleRegistrationForm = () => {
-        this.setState({registrationForm: !this.state.registrationForm, errors: []});
+        this.setState({formType: this.state.formType === 'register' ? 'login' : 'register', errors: []});
     };
 
     render() {
@@ -58,7 +58,7 @@ export default class LoginScreen extends BaseScreen {
             <Screen name="LoginScreen">
                 <form
                     onSubmit={this.handleSubmit}
-                    className={`LoginScreen__form ${this.state.registrationForm ? 'LoginScreen__form--registration' : ''}`}
+                    className={`LoginScreen__form LoginScreen__form--${this.state.formType}`}
                 >
                     {this.state.errors.length > 0 && (
                         <div className="LoginScreen__errors">
@@ -98,7 +98,7 @@ export default class LoginScreen extends BaseScreen {
                         />
                     </div>
 
-                    {this.state.registrationForm && (
+                    {this.state.formType ==='register' && (
                         <div className="LoginScreen__form-field">
                             <label htmlFor="passwordConfirm">Confirm Password</label>
                             <input
@@ -115,10 +115,10 @@ export default class LoginScreen extends BaseScreen {
 
                     <div className="LoginScreen__form-actions">
                         <button type="button" onClick={this.toggleRegistrationForm}>
-                            {this.state.registrationForm ? 'Back' : 'New Account'}
+                            {this.state.formType ==='register' ? 'Back' : 'New Account'}
                         </button>
                         <button type="submit">
-                            {this.state.registrationForm ? 'Register' : 'Login'}
+                            {this.state.formType ==='register' ? 'Register' : 'Login'}
                         </button>
                     </div>
                 </form>
