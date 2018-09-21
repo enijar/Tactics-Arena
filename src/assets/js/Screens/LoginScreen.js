@@ -85,7 +85,9 @@ export default class LoginScreen extends BaseScreen {
                         <button type="button" onClick={this.toggleRegistrationForm}>
                             {this.state.registrationForm ? 'Back' : 'New Account'}
                         </button>
-                        <button type="submit">Login</button>
+                        <button type="submit">
+                            {this.state.registrationForm ? 'Register' : 'Login'}
+                        </button>
                     </div>
                 </form>
             </Screen>
