@@ -1,10 +1,10 @@
-import React from "react";
+import React, {createRef} from "react";
 import {withRouter} from "react-router-dom";
 import AppContext from "../Decorators/AppContext";
 import BaseScreen from "./BaseScreen";
 import Screen from "../Components/Screen";
 import Request from "../app/Request";
-import Validator from "../../../common/Validator";
+import Validator from "../../../common/Validator/index";
 import config from "../../../common/config";
 
 @AppContext
@@ -23,15 +23,16 @@ export default class LoginScreen extends BaseScreen {
     handleSubmit = async event => {
         event.preventDefault();
 
-        const validation = Validator.validate(this.state.data, config.validators.registration(this.state.data));
+        const formType = this.state.registrationForm ? 'register' : 'login';
+        const validation = Validator.validate(this.state.data, config.validators[formType](this.state.data));
 
         if (!validation.passed) {
-            this.setState({errors: validation.errors});
+            this.setState({errors: validation.getErrors()});
             return;
         }
 
         await this.setState({errors: []});
-        const res = await Request.post(`/api/${this.state.registrationForm ? 'register' : 'login'}`, this.state.data);
+        const res = await Request.post(`/api/${formType}`, this.state.data);
 
         if (!res.success) {
             this.setState({errors: res.errors});
@@ -49,7 +50,7 @@ export default class LoginScreen extends BaseScreen {
     };
 
     toggleRegistrationForm = () => {
-        this.setState({registrationForm: !this.state.registrationForm});
+        this.setState({registrationForm: !this.state.registrationForm, errors: []});
     };
 
     render() {
@@ -76,6 +77,7 @@ export default class LoginScreen extends BaseScreen {
                             type="text"
                             name="name"
                             id="name"
+                            autoFocus
                             autoComplete="current-username"
                             tabIndex={1}
                             value={this.state.data.name}

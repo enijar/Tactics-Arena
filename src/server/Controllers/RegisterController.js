@@ -9,12 +9,12 @@ const SALT_ROUNDS = 10;
 export default async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
-    const validation = app.Validator.validate(req.body, config.validators.registration(req.body));
+    const validation = app.Validator.validate(req.body, config.validators.register(req.body));
 
     // Validate validation passed
     if (!validation.passed) {
         res.status(400);
-        res.send(JSON.stringify({success: false, errors: validation.errors}));
+        res.send(JSON.stringify({success: false, errors: validation.getErrors()}));
         return;
     }
 
