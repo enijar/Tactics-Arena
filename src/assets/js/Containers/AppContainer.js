@@ -11,6 +11,7 @@ export default class AppContainer extends Component {
         arena: null,
         floor: 1,
         position: null,
+        socket: null,
         user: {
             id: 1,
             username: 'Enijar'
@@ -23,9 +24,11 @@ export default class AppContainer extends Component {
             arena: this.state.arena,
             floor: this.state.floor,
             user: this.state.user,
+            socket: this.state.socket,
             changeFloor: this.changeFloor,
             setAvatar: this.setAvatar,
-            socket: Socket()
+            connect: this.connect,
+            disconnect: this.disconnect
         };
     }
 
@@ -39,6 +42,14 @@ export default class AppContainer extends Component {
             arena,
             position
         });
+    };
+
+    connect = () => {
+        this.setState({socket: Socket.connect()});
+    };
+
+    disconnect = () => {
+        this.setState({socket: Socket.disconnect()});
     };
 
     render() {

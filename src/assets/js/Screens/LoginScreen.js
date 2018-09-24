@@ -39,6 +39,7 @@ export default class LoginScreen extends BaseScreen {
             return;
         }
 
+        this.props.context.connect();
         await this.setState({errors: []});
         this.props.history.push('/lobby');
     };
