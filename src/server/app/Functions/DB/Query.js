@@ -1,5 +1,5 @@
 import mysql from "mysql";
-import db from "../../db/index";
+import db from "../../../db/index";
 
 export default (sql, data = []) => new Promise((resolve, reject) => {
     sql = mysql.format(sql, data);

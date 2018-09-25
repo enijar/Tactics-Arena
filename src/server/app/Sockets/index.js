@@ -1,4 +1,4 @@
-import ChatSocket from "./ChatSocket";
+import Message from "./Chat/Message";
 import GetSocket from "../Functions/Socket/GetSocket";
 
 export default (io, socket) => {
@@ -8,5 +8,5 @@ export default (io, socket) => {
 
     io.emit('connected', GetSocket(socket));
 
-    ChatSocket(io, socket);
+    Message(io, socket);
 }

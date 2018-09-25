@@ -1,8 +1,8 @@
-import AppController from "../Controllers/AppController";
-import GameListController from "../Controllers/GameListController";
-import PlayerListController from "../Controllers/PlayerListController";
-import LoginController from "../Controllers/LoginController";
-import RegisterController from "../Controllers/RegisterController";
+import AppController from "../app/Controllers/AppController";
+import GameListController from "../app/Controllers/GameListController";
+import PlayerListController from "../app/Controllers/PlayerListController";
+import LoginController from "../app/Controllers/LoginController";
+import RegisterController from "../app/Controllers/RegisterController";
 
 export default app => {
     app.get('/api/game-list', GameListController);

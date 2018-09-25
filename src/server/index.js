@@ -4,7 +4,7 @@ import {Server} from "http";
 import socket from "socket.io";
 import bodyParser from "body-parser";
 import config from "./config/index";
-import Sockets from "./Sockets/index";
+import Sockets from "./app/Sockets/index";
 
 const app = express();
 const server = Server(app);

@@ -1,4 +1,4 @@
-import ChatCommands from "../ChatCommands/index";
+import ChatCommands from "../../Functions/Chat/Commands/index";
 
 export default (io, socket) => {
     socket.on('message', data => {

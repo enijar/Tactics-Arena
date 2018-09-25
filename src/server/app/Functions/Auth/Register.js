@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import FindUser from "../DB/FindUser";
-import app from "../../app/index"
-import config from "../../../common/config";
+import app from "../../index"
+import config from "../../../../common/config";
 import CreateUser from "../DB/CreateUser";
 
 const SALT_ROUNDS = 10;
