@@ -5,5 +5,5 @@ export default async (req, res) => {
 
     res.setHeader('Content-Type', 'application/json');
     res.status(attempt.status || 520);
-    res.send(JSON.stringify({success: attempt.success, errors: attempt.errors || []}));
+    res.send(JSON.stringify({success: attempt.success, data: attempt.data || null, errors: attempt.errors || []}));
 }

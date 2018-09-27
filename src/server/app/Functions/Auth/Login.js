@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import FindUser from "../DB/FindUser";
-import app from "../../index"
+import app from "../../index";
+import env from "../../../../../env";
 import config from "../../../../common/config";
+import RemoveHiddenFields from "../DB/RemoveHiddenFields";
+import SaveUserToken from "./SaveUserToken";
 
 const unauthorized = data => {
     console.error(`Unauthorized access for "${data.name}"`);
@@ -25,7 +29,7 @@ export default async data => {
         };
     }
 
-    const user = await FindUser(data.name);
+    let user = await FindUser(data.name);
 
     // Validate name exists in DB
     if (!user) {
@@ -40,9 +44,15 @@ export default async data => {
             return unauthorized(data);
         }
 
+        user = RemoveHiddenFields(user, ['password']);
+
+        user.jwt = jwt.sign({user}, env.jwt.secret);
+        SaveUserToken(user);
+
         return {
             success: true,
-            status: 200
+            status: 200,
+            data: user
         };
     } catch (err) {
         console.error(`Failed to create hash, with error: "${err.message}"`);

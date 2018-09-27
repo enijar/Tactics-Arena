@@ -4,5 +4,6 @@ const base = path.resolve(__dirname, '..', '..', '..');
 
 export default {
     base,
-    public: path.join(base, 'public')
+    public: path.join(base, 'public'),
+    storage: path.join(base, 'storage'),
 }

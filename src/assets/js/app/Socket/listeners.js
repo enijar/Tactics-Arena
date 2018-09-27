@@ -19,9 +19,11 @@ const listeners = {
     disconnected,
 };
 
-export default socket => {
+export default props => socket => {
     return {
         on() {
+            console.log(props);
+
             for (let listener in listeners) {
                 if (listeners.hasOwnProperty(listener)) {
                     socket.on(listener, listeners[listener]);

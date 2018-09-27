@@ -25,19 +25,13 @@ export default class GameList extends Component {
                     {this.getFloorGames().map((game, index) => (
                         <div className="GameList__games-game" key={game.id}>
                             <div className="GameList__games-game-arena">
-                                <div
-                                    className="GameList__games-game-arena-top"
-                                    onClick={() => this.props.context.setAvatar(index + 1, 'top')}
-                                >
+                                <div className="GameList__games-game-arena-top">
                                     {game.players.filter(player => player.position === 'top').map(player => (
                                         <img src="img/unit/front.png" key={player.id}/>
                                     ))}
                                 </div>
 
-                                <div
-                                    className="GameList__games-game-arena-bottom"
-                                    onClick={() => this.props.context.setAvatar(index + 1, 'bottom')}
-                                >
+                                <div className="GameList__games-game-arena-bottom">
                                     {game.players.filter(player => player.position === 'bottom').map(player => (
                                         <img src="img/unit/back.png" key={player.id}/>
                                     ))}
