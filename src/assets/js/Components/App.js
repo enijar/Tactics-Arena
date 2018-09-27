@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Route, Switch, withRouter} from "react-router-dom";
+import io from "socket.io-client";
 import LoginScreen from "../Screens/LoginScreen";
 import LobbyScreen from "../Screens/LobbyScreen";
 import Context from "../Context/App";
-import io from "socket.io-client";
 import ToggleSocketEvents from "../app/Functions/ToggleSocketEvents";
 
 @withRouter
