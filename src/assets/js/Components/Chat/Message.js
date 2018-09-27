@@ -17,7 +17,7 @@ export default class Message extends Component {
                 </time>
                 {message.type === 'user' && (
                     <div className="Chat__message-user">
-                        {message.user.username}
+                        {message.user.name}
                     </div>
                 )}
                 <div className="Chat__message-text">
