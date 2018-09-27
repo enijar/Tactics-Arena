@@ -1,10 +1,11 @@
 import ChatCommands from "../../Functions/Chat/Commands/index";
 import VerifyUser from "../../Functions/Auth/VerifyUser";
+import LogInfo from "../../Functions/Logger/LogInfo";
 
 export default (io, socket) => {
     socket.on('message', data => {
         if (!VerifyUser(data.user)) {
-            console.info(`Unauthorized access for ${(data.user || {}).name}`);
+            LogInfo({message: 'Unauthorized access', user: data.user});
             socket.disconnect();
             return;
         }

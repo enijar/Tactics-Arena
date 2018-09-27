@@ -6,9 +6,10 @@ import env from "../../../../../env";
 import config from "../../../../common/config";
 import RemoveHiddenFields from "../DB/RemoveHiddenFields";
 import SaveUserToken from "./SaveUserToken";
+import LogInfo from "../Logger/LogInfo";
 
 const unauthorized = data => {
-    console.error(`Unauthorized access for "${data.name}"`);
+    LogInfo(`Unauthorized access for "${data.name}"`);
 
     return {
         success: false,
