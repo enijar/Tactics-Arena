@@ -9,6 +9,9 @@ import ToggleSocketEvents from "../app/Functions/ToggleSocketEvents";
 @withRouter
 export default class App extends Component {
     socketEvents = {
+        'connect': () => {
+            console.log('connect');
+        },
         'disconnect': () => {
             console.log('disconnect');
             this.props.history.push('/');
