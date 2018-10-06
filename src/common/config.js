@@ -10,5 +10,7 @@ module.exports = {
             name: [Validator.validators.required, Validator.validators.max(15)],
             password: [Validator.validators.required]
         })
-    }
+    },
+    floors: 10,
+    arenas: 14
 };

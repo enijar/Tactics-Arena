@@ -1,5 +1,6 @@
+const common = require('../../common/config');
+
 export default {
-    floors: 10,
-    arenas: 10,
+    common,
     maxLobbyMessages: 100
 }

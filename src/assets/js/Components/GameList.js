@@ -15,14 +15,14 @@ export default class GameList extends Component {
 
     getFloorGames() {
         const floorIndex = this.props.context.floor - 1;
-        return this.props.games.slice(floorIndex * config.arenas, config.arenas * (floorIndex + 1));
+        return this.props.games.slice(floorIndex * config.common.arenas, config.common.arenas * (floorIndex + 1));
     }
 
     render() {
         return (
             <div className="GameList">
                 <div className="GameList__games">
-                    {this.getFloorGames().map((game, index) => (
+                    {this.getFloorGames().map(game => (
                         <div className="GameList__games-game" key={game.id}>
                             <div className="GameList__games-game-arena">
                                 <div className="GameList__games-game-arena-top">
@@ -42,7 +42,7 @@ export default class GameList extends Component {
                 </div>
 
                 <div className="GameList__floors">
-                    {Array.from({length: config.floors}).map((floor, index) => (
+                    {Array.from({length: config.common.floors}).map((floor, index) => (
                         <div
                             className={`
                                 GameList__floors-floor
