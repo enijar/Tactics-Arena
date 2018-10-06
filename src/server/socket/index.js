@@ -42,6 +42,10 @@ module.exports = io => {
 
         socket.on('disconnect', () => {
             for (let i = state.players.length - 1; i >= 0; i++) {
+                if (!state.players[i]) {
+                    continue;
+                }
+
                 if (state.players[i].socketId === socket.id) {
                     const player = state.players[i];
                     state.players.splice(i, 1);
