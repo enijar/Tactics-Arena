@@ -9,6 +9,12 @@ const sendRequest = (method, endpoint, data = {}, headers = {}) => new Promise(r
         .set(headers)
         .send(data)
         .end((err, res) => {
+            if (res === undefined) {
+                // Server is disconnected
+                resolve({success: false, errors: ['Server disconnected'], code: 503});
+                return;
+            }
+
             if (res.statusCode < 300) {
                 resolve({success: true, body: res.body, code: res.statusCode});
                 return;
