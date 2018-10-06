@@ -14,8 +14,8 @@ export default class App extends Component {
             this.props.history.push('/lobby');
         },
         'disconnect': () => {
-            this.disconnect();
             this.props.history.push('/');
+            this.disconnect();
         }
     };
 
@@ -25,7 +25,8 @@ export default class App extends Component {
         game: null,
         arena: null,
         floor: 1,
-        user: null
+        user: null,
+        socket: null
     };
 
     getContext() {
