@@ -20,7 +20,7 @@ Finally run the following commands.
 npm install
 npm run assets:build
 npm run start
-./bin/migrate refresh
+./bin/migrate.js
 ```
 
 This will install all the game dependencies, build the assets and server, serve the game,
