@@ -9,11 +9,12 @@ import ToggleSocketEvents from "../app/Functions/ToggleSocketEvents";
 @withRouter
 export default class App extends Component {
     socketEvents = {
-        'connect': () => {
-            console.log('connect');
+        'connected': async user => {
+            await this.setState({user, connected: true});
+            this.props.history.push('/lobby');
         },
         'disconnect': () => {
-            console.log('disconnect');
+            this.disconnect();
             this.props.history.push('/');
         }
     };
@@ -24,8 +25,7 @@ export default class App extends Component {
         game: null,
         arena: null,
         floor: 1,
-        user: null,
-        socket: null
+        user: null
     };
 
     getContext() {
@@ -40,27 +40,29 @@ export default class App extends Component {
             connect: this.connect,
             disconnect: this.disconnect,
             changeFloor: this.changeFloor,
-            setUser: this.setUser
+            emit: this.emit
         };
     }
+
+    emit = (event, data = {}) => {
+        data.user = this.state.user;
+        this.state.socket.emit(event, data);
+    };
 
     changeFloor = floor => {
         this.setState({floor});
     };
 
-    setUser = user => {
-        this.setState({user});
-    };
-
-    connect = () => {
-        const socket = io();
+    connect = user => {
+        const socket = io.connect('http://localhost:3000', {query: {user: JSON.stringify(user)}});
         ToggleSocketEvents(socket, this.socketEvents, 'on');
-        this.setState({socket, connected: true});
+        this.setState({socket});
     };
 
     disconnect = () => {
+        this.state.socket.disconnect();
         ToggleSocketEvents(this.state.socket, this.socketEvents, 'off');
-        this.setState({socket: null, connected: false});
+        this.setState({connected: false, socket: null});
     };
 
     componentDidMount() {

@@ -14,11 +14,11 @@ export default class Chat extends Component {
     };
 
     componentDidMount() {
-        this.props.context.socket.on('message', this.appendMessage);
+        this.props.context.socket.on('chat.message', this.appendMessage);
     }
 
     componentWillUnmount() {
-        this.props.context.socket.off('message', this.appendMessage);
+        this.props.context.socket.off('chat.message', this.appendMessage);
     }
 
     appendMessage = async message => {
@@ -42,10 +42,7 @@ export default class Chat extends Component {
             return;
         }
 
-        this.props.context.socket.emit('message', {
-            user: this.props.context.user,
-            text: message
-        });
+        this.props.context.emit('chat.message', {message});
 
         this.setState({message: ''});
     };

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 export default class Message extends Component {
@@ -8,7 +8,6 @@ export default class Message extends Component {
 
     render() {
         const {message} = this.props;
-        const multiLineMessage = message.text.split(/\n/);
 
         return (
             <div className="Chat__message">
@@ -21,12 +20,7 @@ export default class Message extends Component {
                     </div>
                 )}
                 <div className="Chat__message-text">
-                    {multiLineMessage.map((line, index) => (
-                        <Fragment key={index}>
-                            {line}
-                            {index !== 0 && index !== multiLineMessage.length - 1 ? <br/> : null}
-                        </Fragment>
-                    ))}
+                    {message.message}
                 </div>
             </div>
         );
