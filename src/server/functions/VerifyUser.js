@@ -10,6 +10,10 @@ const config = require('../config/index');
  * @returns {Boolean}
  */
 module.exports = user => {
+    if (!user) {
+        return false;
+    }
+
     // No users have logged in before if the tokensFile doesn't
     // exist, meaning this user is invalid.
     const tokensFile = path.join(config.paths.storage, 'tokens.json');
