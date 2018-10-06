@@ -1,9 +1,8 @@
-import path from "path";
-
+const path = require('path');
 const base = path.resolve(__dirname, '..', '..', '..');
 
-export default {
+module.exports = {
     base,
     public: path.join(base, 'public'),
     storage: path.join(base, 'storage'),
-}
+};

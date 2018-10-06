@@ -1,9 +1,15 @@
-import routes from "./routes";
-import server from "./server";
-import paths from "./paths";
+const common = require('../../common/config');
+const server = require('./server');
+const paths = require('./paths');
+const hashing = require('./hashing');
+const database = require('./database');
+const log = require('./log');
 
-export default {
-    routes,
+module.exports = {
+    common,
     server,
-    paths
-}
+    paths,
+    hashing,
+    database,
+    log
+};

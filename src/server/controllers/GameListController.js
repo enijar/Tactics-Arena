@@ -1,7 +1,7 @@
 const FLOORS = 10;
 const ARENAS = 10;
 
-export default (req, res) => {
+module.exports = (req, res) => {
     const games = [];
 
     let id = 0;
@@ -27,4 +27,4 @@ export default (req, res) => {
 
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(games));
-}
+};

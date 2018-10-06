@@ -1,6 +1,6 @@
-import validators from "./validators";
+const validators = require('./validators');
 
-export default {
+module.exports = {
     validators,
     validate(fields, rules) {
         let passed = true;
@@ -52,4 +52,4 @@ export default {
             }
         }
     }
-}
+};

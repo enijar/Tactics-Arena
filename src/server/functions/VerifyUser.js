@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import config from "../../../config/index";
+const fs = require('fs');
+const path = require('path');
+const config = require('../config/index');
 
 /**
  * Here we check the given user.id and user.jwt exist in the
@@ -9,7 +9,7 @@ import config from "../../../config/index";
  * @param {Object} user
  * @returns {Boolean}
  */
-export default (user = {}) => {
+module.exports = user => {
     // No users have logged in before if the tokensFile doesn't
     // exist, meaning this user is invalid.
     const tokensFile = path.join(config.paths.storage, 'tokens.json');
@@ -25,4 +25,4 @@ export default (user = {}) => {
         user.name === tokens[user.id].name &&
         user.jwt === tokens[user.id].jwt
     );
-}
+};

@@ -1,23 +1,15 @@
-import "@babel/polyfill";
-import express from "express";
-import {Server} from "http";
-import socket from "socket.io";
-import bodyParser from "body-parser";
-import config from "./config/index";
-import Sockets from "./app/Sockets/index";
+const {app, server, socket} = require('./bootstrap');
+const database = require('./database/index');
+const config = require('./config/index');
+const Logger = require('./functions/Logger');
 
-const app = express();
-const server = Server(app);
-const io = socket(server);
+(async () => {
+    require('./routes')(app);
+    require('./socket/index')(socket);
 
-app.use(bodyParser.json());
-app.use(express.static(config.paths.public));
-app.use(bodyParser.urlencoded({extended: true}));
+    await database.sync();
 
-config.routes(app);
-
-io.on('connection', socket => Sockets(io, socket));
-
-server.listen(config.server.port, () => {
-    console.log(`Server running on port ${config.server.port}`);
-});
+    server.listen(config.server.port, () => {
+        Logger.info(`Server running on port ${config.server.port}`);
+    });
+})();

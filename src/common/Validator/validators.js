@@ -1,6 +1,6 @@
 const cleanValue = value => String(value).trim();
 
-export default {
+module.exports = {
     required: field => ({
         passed: cleanValue(field.value).length > 0,
         message: `${field.name} is required`
