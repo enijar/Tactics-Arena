@@ -5,7 +5,9 @@
   flex: 1;
 
   &__messages {
+    $height: 250px;
     max-height: 250px;
+    min-height: 250px;
     overflow: auto;
 
     &::-webkit-scrollbar {

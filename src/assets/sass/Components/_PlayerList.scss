@@ -33,8 +33,8 @@
       border-radius: 50%;
       background-color: color(status-unknown);
 
-      &--online {
-        background-color: color(status-online);
+      &--active {
+        background-color: color(status-active);
       }
 
       &--idle {
