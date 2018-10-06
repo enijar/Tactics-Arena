@@ -1,32 +1,44 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import AppContext from "../Decorators/AppContext";
 
 @AppContext
 export default class PlayerList extends Component {
-    static defaultProps = {
+    state = {
         players: []
     };
 
-    static propTypes = {
-        players: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            username: PropTypes.string.isRequired,
-            status: PropTypes.string
-        }))
+    componentDidMount() {
+        this.props.context.socket.on('player.connected', this.addPlayer);
+        this.props.context.socket.on('player.disconnected', this.removePlayer);
+    }
+
+    componentWillUnmount() {
+        this.props.context.socket.off('player.connected', this.addPlayer);
+        this.props.context.socket.off('player.disconnected', this.removePlayer);
+    }
+
+    addPlayer = player => {
+        const {players} = this.state;
+        players.push(player);
+        this.setState({players});
+    };
+
+    removePlayer = player => {
+        const players = this.state.players.filter(p => p.id === player.id);
+        this.setState({players});
     };
 
     render() {
         return (
             <div className="PlayerList">
                 <div className="PlayerList__inner">
-                    {this.props.players.map(player => (
+                    {this.state.players.map(player => (
                         <div className="PlayerList__player" key={player.id}>
                             <span className={`PlayerList__player-status PlayerList__player-status--${player.status}`}>
                             </span>
 
-                            <span className="PlayerList__player-username" title={player.username}>
-                                {player.username}
+                            <span className="PlayerList__player-username" title={player.name}>
+                                {player.name}
                             </span>
                         </div>
                     ))}

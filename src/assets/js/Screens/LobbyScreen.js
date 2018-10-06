@@ -13,14 +13,12 @@ export default class LobbyScreen extends BaseScreen {
     state = {
         loading: true,
         floor: 1,
-        games: [],
-        players: []
+        games: []
     };
 
     async componentDidMount() {
         await Promise.all([
-            this.setGames(),
-            this.setPlayers()
+            this.setGames()
         ]);
         this.setState({loading: false});
     }
@@ -28,11 +26,6 @@ export default class LobbyScreen extends BaseScreen {
     async setGames() {
         const games = await Request.get('api/game-list');
         await this.setState({games: games.body});
-    }
-
-    async setPlayers() {
-        const players = await Request.get('api/player-list');
-        await this.setState({players: players.body});
     }
 
     render() {
@@ -44,7 +37,7 @@ export default class LobbyScreen extends BaseScreen {
 
                 <div className="LobbyScreen__chat">
                     <Chat/>
-                    <PlayerList players={this.state.players}/>
+                    <PlayerList/>
                 </div>
             </Screen>
         );
