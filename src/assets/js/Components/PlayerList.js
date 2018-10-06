@@ -8,23 +8,15 @@ export default class PlayerList extends Component {
     };
 
     componentDidMount() {
-        this.props.context.socket.on('player.connected', this.addPlayer);
-        this.props.context.socket.on('player.disconnected', this.removePlayer);
+        this.props.context.emit('players.get');
+        this.props.context.socket.on('players.update', this.updatePlayers);
     }
 
     componentWillUnmount() {
-        this.props.context.socket.off('player.connected', this.addPlayer);
-        this.props.context.socket.off('player.disconnected', this.removePlayer);
+        this.props.context.socket.off('players.update', this.updatePlayers);
     }
 
-    addPlayer = player => {
-        const {players} = this.state;
-        players.push(player);
-        this.setState({players});
-    };
-
-    removePlayer = player => {
-        const players = this.state.players.filter(p => p.id === player.id);
+    updatePlayers = players => {
         this.setState({players});
     };
 

@@ -1,3 +1,4 @@
+const state = require('../state/index');
 const Logger = require('../functions/Logger');
 const VerifyUser = require('../functions/VerifyUser');
 
@@ -14,6 +15,14 @@ module.exports = (io, socket) => {
             socket.disconnect();
             Logger.info(`Unverified user "${data.user.name}"`);
             return;
+        }
+
+        // Reset idle timeout for this player
+        for (let i = 0; i < state.players.length; i++) {
+            if (state.players[i].name === data.user.name) {
+                state.players[i].resetIdleTimeout();
+                break;
+            }
         }
 
         next();

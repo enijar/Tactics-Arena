@@ -4,6 +4,7 @@ const paths = require('./paths');
 const hashing = require('./hashing');
 const database = require('./database');
 const log = require('./log');
+const player = require('./player');
 
 module.exports = {
     common,
@@ -11,5 +12,6 @@ module.exports = {
     paths,
     hashing,
     database,
-    log
+    log,
+    player
 };
