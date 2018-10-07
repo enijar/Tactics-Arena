@@ -1,17 +1,16 @@
 const Logger = require('../functions/Logger');
-const state = require('../state/index');
+const GetPublicPlayerObject = require('../functions/GetPublicPlayerObject');
 
 module.exports = (io, socket) => {
     socket.on('chat.message', data => {
-        const date = new Date();
-        const time = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+        const user = GetPublicPlayerObject(data.user, socket.id);
+
+        if (!user) {
+            Logger.info(`Unauthorized user message from "${data.user.name}" saying "${data.message}"`);
+            return;
+        }
 
         Logger.info(`Message from "${data.user.name}" saying "${data.message}"`);
-
-        io.emit('chat.message', {
-            time,
-            message: data.message,
-            user: state.players[socket.id].get()
-        });
+        io.emit('chat.message', {message: data.message, user});
     });
 };

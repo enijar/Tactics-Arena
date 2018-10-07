@@ -14,6 +14,7 @@ module.exports = class Player {
         this.name = props.name;
         this.type = props.type;
         this.status = props.status;
+        this.jwt = props.jwt;
         this.io = props.io;
         this.socket = props.socket;
         this.idleTimeout = null;
