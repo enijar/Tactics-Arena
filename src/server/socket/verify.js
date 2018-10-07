@@ -18,11 +18,8 @@ module.exports = (io, socket) => {
         }
 
         // Reset idle timeout for this player
-        for (let i = 0; i < state.players.length; i++) {
-            if (state.players[i].name === data.user.name) {
-                state.players[i].resetIdleTimeout();
-                break;
-            }
+        if (state.players.hasOwnProperty(socket.id)) {
+            state.players[socket.id].resetIdleTimeout();
         }
 
         next();

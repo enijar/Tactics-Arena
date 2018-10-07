@@ -3,6 +3,7 @@ const Player = require('../objects/Player');
 const Logger = require('../functions/Logger');
 const VerifyUser = require('../functions/VerifyUser');
 const AddSocketIdToUserTokens = require('../functions/AddSocketIdToUserTokens');
+const GetPlayersFromState = require('../functions/GetPlayersFromState');
 
 module.exports = io => {
     io.use((socket, next) => {
@@ -27,7 +28,7 @@ module.exports = io => {
         socket.emit('connected', user);
         Logger.info(`connection.user "${user.name}" -> "${user.socketId}"`);
 
-        state.players.push(new Player({...user, status: 'active', io, socket}));
+        state.players[user.socketId] = new Player({...user, status: 'active', io, socket});
 
         next();
     });
@@ -37,22 +38,17 @@ module.exports = io => {
         require('./chat')(io, socket);
 
         socket.on('players.get', () => {
-            socket.emit('players.update', state.players.map(player => player.get()));
+            socket.emit('players.update', GetPlayersFromState());
         });
 
         socket.on('disconnect', () => {
-            for (let i = state.players.length - 1; i >= 0; i++) {
-                if (!state.players[i]) {
-                    continue;
-                }
-
-                if (state.players[i].socketId === socket.id) {
-                    const player = state.players[i];
-                    state.players.splice(i, 1);
-                    player.destroy();
-                    break;
-                }
+            // Remove player from state
+            if (!state.players.hasOwnProperty(socket.id)) {
+                Logger.info(`No player found in state with socket ID "${socket.id}"`);
+                return;
             }
+            state.players[socket.id].destroy();
+            delete state.players[socket.id];
         });
     });
 };

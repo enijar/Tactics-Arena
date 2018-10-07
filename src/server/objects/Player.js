@@ -1,4 +1,5 @@
 const Logger = require('../functions/Logger');
+const GetPlayersFromState = require('../functions/GetPlayersFromState');
 const state = require('../state/index');
 const config = require('../config/index');
 
@@ -9,7 +10,12 @@ const config = require('../config/index');
  */
 module.exports = class Player {
     constructor(props) {
-        Object.assign(this, props);
+        this.id = props.id;
+        this.name = props.name;
+        this.type = props.type;
+        this.status = props.status;
+        this.io = props.io;
+        this.socket = props.socket;
         this.idleTimeout = null;
     }
 
@@ -19,26 +25,21 @@ module.exports = class Player {
     resetIdleTimeout() {
         Logger.info(`Player.resetIdleTimeout(active) -> ${this.name}`);
 
-        for (let i = 0; i < state.players.length; i++) {
-            if (state.players[i].name === this.name) {
-                state.players[i].status = 'active';
-                break;
-            }
+        if (state.players.hasOwnProperty(this.socket.id)) {
+            state.players[this.socket.id].status = 'active';
         }
 
-        this.io.emit('players.update', state.players.map(player => player.get()));
+        this.io.emit('players.update', GetPlayersFromState());
 
         this.idleTimeout && clearTimeout(this.idleTimeout);
         this.idleTimeout = setTimeout(() => {
             Logger.info(`Player.resetIdleTimeout(idle) -> ${this.name}`);
 
-            for (let i = 0; i < state.players.length; i++) {
-                if (state.players[i].name === this.name) {
-                    state.players[i].status = 'idle';
-                    break;
-                }
+            if (state.players.hasOwnProperty(this.socket.id)) {
+                state.players[this.socket.id].status = 'idle';
             }
-            this.io.emit('players.update', state.players.map(player => player.get()));
+
+            this.io.emit('players.update', GetPlayersFromState());
         }, config.player.idleTimeout);
     }
 
@@ -48,7 +49,7 @@ module.exports = class Player {
     destroy() {
         Logger.info(`Player.destroy -> ${this.name}`);
         this.idleTimeout && clearTimeout(this.idleTimeout);
-        this.io.emit('players.update', state.players.map(player => player.get()));
+        this.io.emit('players.update', GetPlayersFromState());
     }
 
     /**
