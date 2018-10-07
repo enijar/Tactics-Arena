@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import config from "../config";
+import {asset} from "../app/utils";
 import AppContext from "../Decorators/AppContext";
 
 @AppContext
@@ -27,13 +28,13 @@ export default class GameList extends Component {
                             <div className="GameList__games-game-arena">
                                 <div className="GameList__games-game-arena-top">
                                     {game.players.filter(player => player.position === 'top').map(player => (
-                                        <img src="img/unit/front.png" key={player.id}/>
+                                        <img src={asset('img/unit/front.png')} key={player.id}/>
                                     ))}
                                 </div>
 
                                 <div className="GameList__games-game-arena-bottom">
                                     {game.players.filter(player => player.position === 'bottom').map(player => (
-                                        <img src="img/unit/back.png" key={player.id}/>
+                                        <img src={asset('mg/unit/back.png')} key={player.id}/>
                                     ))}
                                 </div>
                             </div>
