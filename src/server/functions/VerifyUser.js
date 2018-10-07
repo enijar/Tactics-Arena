@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('../config/index');
+const Logger = require('../functions/Logger');
 
 /**
  * Here we check the given user.id and user.jwt exist in the
@@ -11,6 +12,7 @@ const config = require('../config/index');
  */
 module.exports = user => {
     if (!user) {
+        Logger.info('VerifyUser -> No user sent');
         return false;
     }
 
@@ -18,6 +20,7 @@ module.exports = user => {
     // exist, meaning this user is invalid.
     const tokensFile = path.join(config.paths.storage, 'tokens.json');
     if (!fs.existsSync(tokensFile)) {
+        Logger.info('VerifyUser -> tokens.json file not found');
         return false;
     }
 
