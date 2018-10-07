@@ -49,6 +49,7 @@ module.exports = io => {
             }
             state.players[socket.id].destroy();
             delete state.players[socket.id];
+            io.emit('players.update', GetPlayersFromState());
         });
     });
 };
