@@ -31,6 +31,7 @@ module.exports = async (req, res) => {
     try {
         const password = await bcrypt.hash(req.body.password, config.hashing.saltRounds);
         let user = await User.create({name: req.body.name, password});
+        user = user.json();
         user.jwt = jwt.sign({user}, config.server.key);
         SaveUserToken(user);
 
