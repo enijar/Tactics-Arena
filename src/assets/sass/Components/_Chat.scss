@@ -21,21 +21,20 @@
     justify-content: space-between;
     margin-bottom: 0.5em;
 
-    &-time, &-user {
-      padding-right: 0.5em;
-    }
-
     &-time {
       font-style: italic;
     }
 
     &-user {
       font-weight: bold;
+
+      &--gray {
+        color: color(player-gray);
+      }
     }
 
-    &-text {
+    &-message {
       flex: 1;
-      padding-left: 0.5em;
     }
   }
 

@@ -11,15 +11,10 @@ export default class Message extends Component {
 
         return (
             <div className="Chat__message">
-                <time className="Chat__message-time">
-                    {message.time}
-                </time>
-                {message.type === 'user' && (
-                    <div className="Chat__message-user">
-                        {message.user.name}
-                    </div>
-                )}
-                <div className="Chat__message-text">
+                <div className={`Chat__message-user Chat__message-user--${message.user.type}`}>
+                    {message.user.name}&nbsp;:&nbsp;
+                </div>
+                <div className="Chat__message-message">
                     {message.message}
                 </div>
             </div>

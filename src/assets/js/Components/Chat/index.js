@@ -66,7 +66,12 @@ export default class Chat extends Component {
         return (
             <div className="Chat">
                 <div className="Chat__messages" ref={this.messages} onScroll={this.handleScroll}>
-                    {this.state.messages.map((message, index) => <Message key={index} message={message}/>)}
+                    {this.state.messages.map((message, index) => (
+                        <Message
+                            key={index}
+                            message={message}
+                        />
+                    ))}
                 </div>
 
                 <div className="Chat__input">
