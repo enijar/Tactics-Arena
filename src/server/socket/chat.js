@@ -7,7 +7,8 @@ module.exports = (io, socket) => {
             time,
             message: data.message,
             user: {
-                name: data.user.name
+                name: data.user.name,
+                type: data.user.type
             }
         });
     });

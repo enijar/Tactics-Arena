@@ -11,6 +11,11 @@ const User = database.define('user', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'gray'
+    },
     createdAt: {
         type: Sequelize.DATE,
         allowNull: false

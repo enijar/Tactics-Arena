@@ -60,7 +60,8 @@ module.exports = class Player {
         return {
             id: this.id,
             name: this.name,
-            status: this.status
+            status: this.status,
+            type: this.type
         };
     }
 };
