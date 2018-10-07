@@ -1,16 +1,22 @@
 const Logger = require('../functions/Logger');
-const GetPublicPlayerObject = require('../functions/GetPublicPlayerObject');
+const ParseChatMessage = require('../functions/Chat/ParseChatMessage');
 
 module.exports = (io, socket) => {
-    socket.on('chat.message', data => {
-        const user = GetPublicPlayerObject(data.user, socket.id);
+    socket.on('chat.message', async data => {
+        const {message, user} = await ParseChatMessage(socket, data);
 
         if (!user) {
-            Logger.info(`Unauthorized user message from "${data.user.name}" saying "${data.message}"`);
+            Logger.info(`Unauthorized user message from "${data.user.name}" attempting to say "${data.message}"`);
             return;
         }
 
-        Logger.info(`Message from "${data.user.name}" saying "${data.message}"`);
-        io.emit('chat.message', {message: data.message, user});
+        Logger.info(`Message from "${data.user.name}" saying "${message.text}"`);
+
+        if (message.public) {
+            io.emit('chat.message', {message, user});
+            return;
+        }
+
+        socket.emit('chat.message', {message, user});
     });
 };

@@ -3,7 +3,7 @@ const Player = require('../objects/Player');
 const Logger = require('../functions/Logger');
 const VerifyUser = require('../functions/VerifyUser');
 const AddSocketIdToUserTokens = require('../functions/AddSocketIdToUserTokens');
-const GetPlayersFromState = require('../functions/GetPlayersFromState');
+const GetPlayersFromState = require('../functions/Player/GetPlayersFromState');
 
 module.exports = io => {
     io.use((socket, next) => {

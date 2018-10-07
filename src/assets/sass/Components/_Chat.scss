@@ -35,6 +35,11 @@
 
     &-message {
       flex: 1;
+
+      &--command {
+        color: color(message-command);
+        font-weight: bold;
+      }
     }
   }
 

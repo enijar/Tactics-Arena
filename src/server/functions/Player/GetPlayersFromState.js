@@ -1,4 +1,4 @@
-const state = require('../state/index');
+const state = require('../../state/index');
 
 /**
  * Get an array of player objects from the players state.

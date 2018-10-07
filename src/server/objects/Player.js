@@ -1,5 +1,5 @@
 const Logger = require('../functions/Logger');
-const GetPlayersFromState = require('../functions/GetPlayersFromState');
+const GetPlayersFromState = require('../functions/Player/GetPlayersFromState');
 const state = require('../state/index');
 const config = require('../config/index');
 

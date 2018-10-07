@@ -1,4 +1,4 @@
-const state = require('../state/index');
+const state = require('../../state/index');
 
 module.exports = (user, socketId) => {
     if (!state.players.hasOwnProperty(socketId)) {
