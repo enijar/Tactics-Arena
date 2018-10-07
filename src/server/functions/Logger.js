@@ -6,6 +6,9 @@ const format = winston.format.printf(info => {
     return `${info.timestamp} [${info.level}]: ${info.message}`;
 });
 
+/**
+ * @type {winston.Logger}
+ */
 module.exports = winston.createLogger({
     format: winston.format.combine(
         winston.format.timestamp(),
