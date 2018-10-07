@@ -11,7 +11,6 @@ module.exports = class Player {
     constructor(props) {
         Object.assign(this, props);
         this.idleTimeout = null;
-        this.resetIdleTimeout();
     }
 
     /**
