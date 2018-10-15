@@ -7,7 +7,13 @@ const GetPlayersFromState = require('../functions/Player/GetPlayersFromState');
 
 module.exports = io => {
     io.use((socket, next) => {
-        let user = JSON.parse(socket.handshake.query.user) || null;
+        let user = null;
+
+        try {
+            user = JSON.parse(socket.handshake.query.user) || null;
+        } catch (err) {
+            Logger.error(err);
+        }
 
         if (!user) {
             socket.disconnect();
