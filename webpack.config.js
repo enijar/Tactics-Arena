@@ -2,7 +2,7 @@ const path = require('path');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = (env, argv) => ({
+module.exports = {
     entry: [
         path.resolve(__dirname, 'src', 'assets', 'js', 'app.js'),
         path.resolve(__dirname, 'src', 'assets', 'sass', 'app.scss')
@@ -41,8 +41,8 @@ module.exports = (env, argv) => ({
     },
     plugins: [
         new WebpackNotifierPlugin({
-            alwaysNotify: argv.mode === 'development',
-            skipFirstNotification: argv.mode !== 'development'
+            alwaysNotify: process.env.NODE_ENV === 'development',
+            skipFirstNotification: process.env.NODE_ENV === 'production'
         }),
         new ExtractTextPlugin({
             filename: path.join('css', 'app.css'),
@@ -50,4 +50,4 @@ module.exports = (env, argv) => ({
         })
     ],
     devtool: 'source-map'
-});
+};
