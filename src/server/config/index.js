@@ -13,5 +13,5 @@ module.exports = {
     hashing,
     database,
     log,
-    player
+    player,
 };

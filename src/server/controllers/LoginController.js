@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Validator = require('../../common/Validator/index');
-const SaveUserToken = require('../functions/SaveUserToken');
 const Logger = require('../functions/Logger');
 const config = require('../config/index');
 
@@ -43,14 +42,15 @@ module.exports = async (req, res) => {
             return unauthorized(req, res);
         }
 
+        const token = jwt.sign({user: user.json()}, config.server.key);
+        user.saveToken(token);
         user = user.json();
-        user.jwt = jwt.sign({user}, config.server.key);
-        SaveUserToken(user);
+        user.jwt = token;
 
         return res.status(200).json({
             success: true,
             status: 200,
-            data: user
+            data: user,
         });
     } catch (err) {
         Logger.error(err);

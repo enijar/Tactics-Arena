@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const config = require('../config/index');
-
-module.exports = new Sequelize(config.database.name, config.database.username, config.database.password, {
+const models = require('../models/index');
+const db = new Sequelize(config.database.name, config.database.username, config.database.password, {
     host: config.database.host,
-    dialect: 'mysql',
+    dialect: config.database.dialect,
     pool: {
         max: 5,
         min: 0,
@@ -11,5 +11,15 @@ module.exports = new Sequelize(config.database.name, config.database.username, c
         idle: 10000
     },
     operatorsAliases: false,
-    logging: false
+    logging: false,
 });
+
+for (let model in models) {
+    if (!models.hasOwnProperty(model)) {
+        continue;
+    }
+
+    models[model] = models[model].init(db, Sequelize);
+}
+
+module.exports = db;
