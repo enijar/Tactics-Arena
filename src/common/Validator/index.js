@@ -1,7 +1,5 @@
-const validators = require('./validators');
-
 module.exports = {
-    validators,
+    validators: require('./validators'),
     validate(fields, rules) {
         let passed = true;
         const allErrors = {};
@@ -11,7 +9,7 @@ module.exports = {
                 continue;
             }
 
-            const value = rules[field];
+            const value = fields[field] === undefined ? '' : fields[field];
 
             for (let i = 0; i < rules[field].length; i++) {
                 const validation = rules[field][i]({name: field, value});
