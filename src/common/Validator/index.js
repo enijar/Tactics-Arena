@@ -6,12 +6,12 @@ module.exports = {
         let passed = true;
         const allErrors = {};
 
-        for (let field in fields) {
-            if (!fields.hasOwnProperty(field) || !rules.hasOwnProperty(field)) {
+        for (let field in rules) {
+            if (!rules.hasOwnProperty(field)) {
                 continue;
             }
 
-            const value = fields[field];
+            const value = rules[field];
 
             for (let i = 0; i < rules[field].length; i++) {
                 const validation = rules[field][i]({name: field, value});
