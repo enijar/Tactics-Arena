@@ -1,17 +1,9 @@
-const common = require('../../common/config');
-const server = require('./server');
-const paths = require('./paths');
-const hashing = require('./hashing');
-const database = require('./database');
-const log = require('./log');
-const player = require('./player');
-
 module.exports = {
-    common,
-    server,
-    paths,
-    hashing,
-    database,
-    log,
-    player,
+    common: require('../../common/config'),
+    server: require('./server'),
+    paths: require('./paths'),
+    hashing: require('./hashing'),
+    database: require('./database'),
+    log: require('./log'),
+    player: require('./player'),
 };
