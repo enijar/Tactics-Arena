@@ -29,4 +29,11 @@ module.exports = {
             provider.get(key, err => resolve(!err));
         });
     },
+    remove(key) {
+        return new Promise((resolve, reject) => {
+            provider.del(key, (err) => {
+                err ? reject(err) : resolve();
+            });
+        });
+    },
 };

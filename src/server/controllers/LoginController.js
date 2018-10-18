@@ -46,7 +46,8 @@ module.exports = async (req, res) => {
 
     // Validate login attempts has not been exceeded
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const loginAttempts = await cache.get(`login:attempts:${md5(`${req.body.name}${ip}`)}`, 0);
+    const loginAttemptsKey = `login:attempts:${md5(`${req.body.name}${ip}`)}`;
+    const loginAttempts = await cache.get(loginAttemptsKey, 0);
 
     if (loginAttempts >= config.loginAttemptsThrottle) {
         // Prevent more login attempts.
@@ -68,6 +69,9 @@ module.exports = async (req, res) => {
         if (!await bcrypt.compare(req.body.password, player.password)) {
             return await unauthorized(req, res);
         }
+
+        // We not longer need to keep track of the failed login attempts, since we're not logged in.
+        await cache.remove(loginAttemptsKey);
 
         const token = jwt.sign({player: player.json()}, config.key);
         const playerJSON = player.json({token});
