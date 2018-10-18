@@ -10,8 +10,7 @@ export default class App extends Component {
     state = {
         loading: true,
         connected: false,
-        game: null,
-        arena: null,
+        games: [],
         floor: 1,
         player: null,
         socket: null,
@@ -21,8 +20,7 @@ export default class App extends Component {
         return {
             loading: this.state.loading,
             connected: this.state.connected,
-            game: this.state.game,
-            arena: this.state.arena,
+            games: this.state.games,
             floor: this.state.floor,
             player: this.state.player,
             connect: this.connect,
@@ -40,11 +38,18 @@ export default class App extends Component {
             url: `ws://localhost:3000/${encodeURI(JSON.stringify(player))}`,
         });
 
-        await this.setState({socket, player});
+        await this.setState({socket});
 
-        this.state.socket.on('connect', async () => {
+        this.state.socket.on('connect', () => {
             this.state.socket.send('connect', player);
-            await this.setState({connected: true});
+        });
+
+        this.state.socket.on('connected', async connection => {
+            await this.setState({
+                connected: true,
+                player: connection.player,
+                games: connection.games,
+            });
             this.props.history.push('/lobby');
         });
 

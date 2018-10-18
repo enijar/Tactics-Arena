@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const config = require('./config');
 const db = require('./services/db');
 const socket = require('./socket/index');
+const state = require('./state/index');
+const Game = require('./models/state/Game');
 
 (async () => {
     new ClusterWS({
@@ -22,6 +24,17 @@ const socket = require('./socket/index');
             this.wss.on('connection', socket.connection);
         },
     });
+
+    // Fill the games state with empty games. These will be updated when
+    // players interact with them via the lobby and to keep track of
+    // in-game state.
+    let id = 0;
+    for (let floor = 1; floor <= config.common.floors; floor++) {
+        for (let arena = 1; arena <= config.common.arenas; arena++) {
+            id++;
+            state.games.add(id, new Game(id, floor, arena));
+        }
+    }
 
     await db.sync();
 })();

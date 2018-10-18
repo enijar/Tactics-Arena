@@ -1,22 +1,13 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import config from "../config";
 import {asset} from "../app/utils";
 import AppContext from "../Decorators/AppContext";
 
 @AppContext
 export default class GameList extends Component {
-    static defaultProps = {
-        games: []
-    };
-
-    static propTypes = {
-        games: PropTypes.array
-    };
-
     getFloorGames() {
         const floorIndex = this.props.context.floor - 1;
-        return this.props.games.slice(floorIndex * config.common.arenas, config.common.arenas * (floorIndex + 1));
+        return this.props.context.games.slice(floorIndex * config.common.arenas, config.common.arenas * (floorIndex + 1));
     }
 
     render() {

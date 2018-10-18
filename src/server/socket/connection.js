@@ -1,5 +1,9 @@
 const state = require('../state/index');
-const ConnectedPlayer = require('../models/ConnectedPlayer');
+const ConnectedPlayer = require('../models/state/ConnectedPlayer');
+
+const logConnectedPlayers = () => {
+    console.log(`${state.connectedPlayers.all().length} players connected`);
+};
 
 /**
  * Verify the connection by validating the given player's JWT
@@ -11,11 +15,16 @@ const ConnectedPlayer = require('../models/ConnectedPlayer');
 module.exports = socket => {
     socket.on('connect', player => {
         state.connectedPlayers.add(socket.id, new ConnectedPlayer(socket.id, player.id));
-        console.log(`${state.connectedPlayers.all().length} players connected`);
+        logConnectedPlayers();
+
+        socket.send('connected', {
+            player,
+            games: state.games.all(),
+        });
     });
 
     socket.on('disconnect', () => {
         state.connectedPlayers.remove(socket.id);
-        console.log(`${state.connectedPlayers.all().length} players connected`);
+        logConnectedPlayers();
     });
 };
