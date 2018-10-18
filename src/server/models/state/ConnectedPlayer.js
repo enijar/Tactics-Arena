@@ -1,18 +1,28 @@
 const config = require('../../config');
 
 module.exports = class ConnectedPlayer {
-    constructor(socket, player, status = 'active') {
-        this.data = Object.assign({status}, player);
+    constructor(wss, socket, token, player, status = 'active') {
+        this.public = player.public();
+        this.public.status = status;
+        this.player = player;
+        this.wss = wss;
         this.socket = socket;
+        this.token = token;
+        this.timeout = null;
         this.resetIdleTimeout();
     }
 
     resetIdleTimeout() {
-        this.data.status = 'active';
+        this.public.status = 'active';
+        this.wss.publish('player.activity', this.public);
 
-        setTimeout(() => {
-            this.data.status = 'idle';
-            this.socket.send('player.update', this.data);
+        if (this.timeout !== null) {
+            clearTimeout(this.timeout);
+        }
+
+        this.timeout = setTimeout(() => {
+            this.public.status = 'idle';
+            this.wss.publish('player.activity', this.public);
         }, config.idlePlayerTimeout);
     }
 };

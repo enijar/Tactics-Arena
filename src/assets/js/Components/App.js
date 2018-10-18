@@ -13,6 +13,7 @@ export default class App extends Component {
         socket: null,
         player: null,
         floor: 1,
+        subscriptions: {},
     };
 
     getContext() {
@@ -22,11 +23,29 @@ export default class App extends Component {
             socket: this.state.socket,
             floor: this.state.floor,
             player: this.state.player,
+            subscriptions: this.state.subscriptions,
             connect: this.connect,
             disconnect: this.disconnect,
             changeFloor: this.changeFloor,
+            addSubscription: this.addSubscription,
+            removeSubscription: this.removeSubscription,
         };
     }
+
+    addSubscription = (channel, callback) => {
+        const {subscriptions} = this.state;
+        const subscription = this.state.socket.subscribe(channel);
+        subscription.watch(callback);
+        subscriptions[channel] = subscription;
+        this.setState({subscriptions});
+    };
+
+    removeSubscription = channel => {
+        const {subscriptions} = this.state;
+        subscriptions[channel].unsubscribe();
+        delete subscriptions[channel];
+        this.setState({subscriptions});
+    };
 
     changeFloor = floor => {
         this.setState({floor});
@@ -39,26 +58,35 @@ export default class App extends Component {
 
         await this.setState({socket});
 
-        this.state.socket.on('connect', async () => {
+        this.state.socket.on('connect', () => {
             this.state.socket.send('connect', player);
-            await this.setState({connected: true, player});
-            this.props.history.push('/lobby');
+
+            this.state.socket.on('connected', async player => {
+                await this.setState({connected: true, player});
+                this.props.history.push('/lobby');
+            });
         });
 
-        this.state.socket.on('disconnect', () => {
-            this.disconnect();
-        });
+        this.state.socket.on('disconnect', () => this.disconnect());
     };
 
-    disconnect = () => {
-        this.setState({connected: false, socket: null, player: null});
+    disconnect = async () => {
+        await this.setState({connected: false, socket: null, player: null});
+        this.props.history.push('/');
     };
 
     async componentDidMount() {
         if (this.props.location.pathname !== '/') {
             this.props.history.push('/');
         }
-        this.setState({loading: false});
+        await this.setState({loading: false});
+
+        window.addEventListener('mousedown', () => {
+            if (!this.state.connected) {
+                return;
+            }
+            this.state.socket.send('player.activity', this.state.player);
+        });
     }
 
     render() {

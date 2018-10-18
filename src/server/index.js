@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const db = require('./services/db');
-const socket = require('./socket/index');
 const state = require('./state/index');
 const Game = require('./models/state/Game');
 
@@ -20,8 +19,8 @@ const Game = require('./models/state/Game');
             require('./routes')(app);
 
             this.server.on('request', app);
-            this.wss.setMiddleware('verifyConnection', socket.verify);
-            this.wss.on('connection', socket.connection);
+            this.wss.setMiddleware('verifyConnection', require('./sockets/middleware/verifyConnection'));
+            this.wss.on('connection', socket => require('./sockets/index')(this.wss, socket));
         },
     });
 

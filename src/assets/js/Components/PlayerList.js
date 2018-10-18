@@ -9,9 +9,13 @@ export default class PlayerList extends SubscriptionComponent {
     };
 
     componentDidMount() {
-        this.openSubscriptions({
+        this.openEvents({
             'players': this.setPlayers,
-            'player.update': this.updatePlayer,
+        });
+        this.openSubscriptions({
+            'player.connect': this.playerConnect,
+            'player.activity': this.playerActivity,
+            'player.disconnect': this.playerDisconnect,
         });
     }
 
@@ -19,8 +23,22 @@ export default class PlayerList extends SubscriptionComponent {
         this.setState({players});
     };
 
-    updatePlayer = player => {
+    playerConnect = player => {
+        console.log('player.connect -> player', player);
+        const {players} = this.state;
+        players.push(player);
+        this.setState({players});
+    };
+
+    playerActivity = player => {
+        console.log('player.activity -> player', player);
         const players = this.state.players.map(p => p.id === player.id ? player : p);
+        this.setState({players});
+    };
+
+    playerDisconnect = player => {
+        console.log('player.disconnect -> player', player);
+        const players = this.state.players.filter(p => p.id !== player.id);
         this.setState({players});
     };
 
