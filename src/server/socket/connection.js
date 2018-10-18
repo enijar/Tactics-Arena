@@ -19,10 +19,10 @@ module.exports = socket => {
             try {
                 player = await Player.findOne({where: {name: player.name}});
 
-                state.connectedPlayers.add(socket.id, new ConnectedPlayer(socket.id, player.public()));
+                state.connectedPlayers.add(socket.id, new ConnectedPlayer(socket, player.public()));
                 logConnectedPlayers();
 
-                socket.send('players', state.connectedPlayers.all());
+                socket.send('players', state.connectedPlayers.all().map(player => player.data));
                 socket.send('games', state.games.all());
             } catch (err) {
                 console.error(err.message);

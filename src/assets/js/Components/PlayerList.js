@@ -1,25 +1,26 @@
-import React, {Component} from "react";
+import React from "react";
 import AppContext from "../Decorators/AppContext";
+import SubscriptionComponent from "./SubscriptionComponent";
 
 @AppContext
-export default class PlayerList extends Component {
-    subscriptions = [];
-
+export default class PlayerList extends SubscriptionComponent {
     state = {
         players: [],
     };
 
     componentDidMount() {
-        this.props.context.socket.on('players', this.setPlayers);
-    }
-
-    componentWillUnmount() {
-        this.subscriptions.forEach(subscription => {
-            this.props.context.socket.close(subscription, this.setPlayers);
+        this.openSubscriptions({
+            'players': this.setPlayers,
+            'player.update': this.updatePlayer,
         });
     }
 
     setPlayers = players => {
+        this.setState({players});
+    };
+
+    updatePlayer = player => {
+        const players = this.state.players.map(p => p.id === player.id ? player : p);
         this.setState({players});
     };
 

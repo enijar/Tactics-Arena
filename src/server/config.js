@@ -23,4 +23,5 @@ module.exports = {
     cacheExpireTime: 1000 * 60 * 60 * 24, // 1 day
     tokenExpireTime: 1000 * 60 * 60 * 24 * 7 * 2, // 2 weeks
     loginAttemptsThrottle: 5,
+    idlePlayerTimeout: 10000, // 10 seconds
 };
