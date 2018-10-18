@@ -3,19 +3,23 @@ import AppContext from "../Decorators/AppContext";
 
 @AppContext
 export default class PlayerList extends Component {
+    subscriptions = [];
+
     state = {
-        players: []
+        players: [],
     };
 
     componentDidMount() {
-        //
+        this.props.context.socket.on('players', this.setPlayers);
     }
 
     componentWillUnmount() {
-        //
+        this.subscriptions.forEach(subscription => {
+            this.props.context.socket.close(subscription, this.setPlayers);
+        });
     }
 
-    updatePlayers = players => {
+    setPlayers = players => {
         this.setState({players});
     };
 

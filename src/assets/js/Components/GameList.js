@@ -5,9 +5,32 @@ import AppContext from "../Decorators/AppContext";
 
 @AppContext
 export default class GameList extends Component {
+    subscriptions = [];
+
+    state = {
+        games: [],
+    };
+
+    componentDidMount() {
+        this.props.context.socket.on('games', this.setGames);
+    }
+
+    componentWillUnmount() {
+        this.subscriptions.forEach(subscription => {
+            this.props.context.socket.close(subscription, this.setGames);
+        });
+    }
+
+    setGames = games => {
+        this.setState({games});
+    };
+
     getFloorGames() {
         const floorIndex = this.props.context.floor - 1;
-        return this.props.context.games.slice(floorIndex * config.common.arenas, config.common.arenas * (floorIndex + 1));
+        return this.state.games.slice(
+            floorIndex * config.common.arenas,
+            config.common.arenas * (floorIndex + 1),
+        );
     }
 
     render() {

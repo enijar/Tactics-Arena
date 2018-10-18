@@ -10,17 +10,16 @@ export default class App extends Component {
     state = {
         loading: true,
         connected: false,
-        games: [],
-        floor: 1,
-        player: null,
         socket: null,
+        player: null,
+        floor: 1,
     };
 
     getContext() {
         return {
             loading: this.state.loading,
             connected: this.state.connected,
-            games: this.state.games,
+            socket: this.state.socket,
             floor: this.state.floor,
             player: this.state.player,
             connect: this.connect,
@@ -40,16 +39,9 @@ export default class App extends Component {
 
         await this.setState({socket});
 
-        this.state.socket.on('connect', () => {
+        this.state.socket.on('connect', async () => {
             this.state.socket.send('connect', player);
-        });
-
-        this.state.socket.on('connected', async connection => {
-            await this.setState({
-                connected: true,
-                player: connection.player,
-                games: connection.games,
-            });
+            await this.setState({connected: true, player});
             this.props.history.push('/lobby');
         });
 

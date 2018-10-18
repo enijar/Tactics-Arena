@@ -1,6 +1,7 @@
 module.exports = class ConnectedPlayer {
-    constructor(socketId, playerId) {
+    constructor(socketId, player, status = 'active') {
+        Object.assign(this, player);
         this.socketId = socketId;
-        this.playerId = playerId;
+        this.status = status;
     }
 };

@@ -39,9 +39,29 @@ module.exports = class Player extends Sequelize.Model {
         );
     }
 
+    constructor(props) {
+        super(props);
+        this.hiddenFields = ['password'];
+        this.publicFields = ['id', 'name', 'type', 'stat'];
+    }
+
     json(attributes = {}) {
         const values = Object.assign(attributes, this.get());
-        delete values.password;
+        for (let i = 0; i < this.hiddenFields.length; i++) {
+            delete values[this.hiddenFields[i]];
+        }
+        return values;
+    }
+
+    public() {
+        const fields = Object.assign({}, this.get());
+        const values = {};
+        for (let i = 0; i < this.publicFields.length; i++) {
+            if (!fields.hasOwnProperty(this.publicFields[i])) {
+                continue;
+            }
+            values[this.publicFields[i]] = fields[this.publicFields[i]];
+        }
         return values;
     }
 };

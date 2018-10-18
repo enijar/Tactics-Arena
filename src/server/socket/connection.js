@@ -1,5 +1,6 @@
 const state = require('../state/index');
 const ConnectedPlayer = require('../models/state/ConnectedPlayer');
+const Player = require('../models/Player');
 
 const logConnectedPlayers = () => {
     console.log(`${state.connectedPlayers.all().length} players connected`);
@@ -14,13 +15,19 @@ const logConnectedPlayers = () => {
  */
 module.exports = socket => {
     socket.on('connect', player => {
-        state.connectedPlayers.add(socket.id, new ConnectedPlayer(socket.id, player.id));
-        logConnectedPlayers();
+        (async () => {
+            try {
+                player = await Player.findOne({where: {name: player.name}});
 
-        socket.send('connected', {
-            player,
-            games: state.games.all(),
-        });
+                state.connectedPlayers.add(socket.id, new ConnectedPlayer(socket.id, player.public()));
+                logConnectedPlayers();
+
+                socket.send('players', state.connectedPlayers.all());
+                socket.send('games', state.games.all());
+            } catch (err) {
+                console.error(err.message);
+            }
+        })();
     });
 
     socket.on('disconnect', () => {
