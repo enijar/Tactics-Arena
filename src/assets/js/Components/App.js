@@ -82,10 +82,11 @@ export default class App extends Component {
         await this.setState({loading: false});
 
         window.addEventListener('mousedown', () => {
-            if (!this.state.connected) {
-                return;
-            }
-            this.state.socket.send('player.activity', this.state.player);
+            this.state.connected && this.state.socket.send('player.activity', this.state.player);
+        });
+
+        window.addEventListener('keydown', () => {
+            this.state.connected && this.state.socket.send('player.activity', this.state.player);
         });
     }
 

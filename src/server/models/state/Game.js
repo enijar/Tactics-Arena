@@ -6,4 +6,12 @@ module.exports = class Game {
         this.players = players;
         this.spectators = spectators;
     }
+
+    addPlayer(player) {
+        this.players.push(player);
+    }
+
+    removePlayer(player) {
+        this.players = this.players.filter(p => p.id !== player.id);
+    }
 };

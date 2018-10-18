@@ -11,9 +11,11 @@ export default class GameList extends SubscriptionComponent {
     };
 
     componentDidMount() {
-        this.openSubscriptions({
+        this.openEvents({
             'games': this.setGames,
-            'game.update': this.updateGame,
+        });
+        this.openSubscriptions({
+            'game.activity': this.updateActivity,
         });
     }
 
@@ -21,7 +23,8 @@ export default class GameList extends SubscriptionComponent {
         this.setState({games});
     };
 
-    updateGame = game => {
+    updateActivity = game => {
+        console.log('game.activity -> game', game);
         const games = this.state.games.map(g => g.id === game.id ? game : g);
         this.setState({games});
     };
@@ -34,6 +37,10 @@ export default class GameList extends SubscriptionComponent {
         );
     }
 
+    setAvatar = (position, game) => () => {
+        this.props.context.socket.send('game.activity', {position, game, player: this.props.context.player});
+    };
+
     render() {
         return (
             <div className="GameList">
@@ -41,15 +48,15 @@ export default class GameList extends SubscriptionComponent {
                     {this.getFloorGames().map(game => (
                         <div className="GameList__games-game" key={game.id}>
                             <div className="GameList__games-game-arena">
-                                <div className="GameList__games-game-arena-top">
+                                <div className="GameList__games-game-arena-top" onClick={this.setAvatar('top', game)}>
                                     {game.players.filter(player => player.position === 'top').map(player => (
                                         <img src={asset('img/unit/front.png')} key={player.id}/>
                                     ))}
                                 </div>
 
-                                <div className="GameList__games-game-arena-bottom">
+                                <div className="GameList__games-game-arena-bottom" onClick={this.setAvatar('bottom', game)}>
                                     {game.players.filter(player => player.position === 'bottom').map(player => (
-                                        <img src={asset('mg/unit/back.png')} key={player.id}/>
+                                        <img src={asset('img/unit/back.png')} key={player.id}/>
                                     ))}
                                 </div>
                             </div>

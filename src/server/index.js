@@ -19,8 +19,8 @@ const Game = require('./models/state/Game');
             require('./routes')(app);
 
             this.server.on('request', app);
-            this.wss.setMiddleware('verifyConnection', require('./sockets/middleware/verifyConnection'));
-            this.wss.on('connection', socket => require('./sockets/index')(this.wss, socket));
+            this.wss.setMiddleware('verifyConnection', require('./wss/middleware/verifyConnection'));
+            this.wss.on('connection', socket => require('./wss/index')(this.wss, socket));
         },
     });
 

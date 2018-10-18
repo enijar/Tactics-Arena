@@ -1,10 +1,12 @@
 const config = require('../../config');
+const state = require('../../state/index');
 
 module.exports = class ConnectedPlayer {
-    constructor(wss, socket, token, player, status = 'active') {
+    constructor(wss, socket, token, player, game = null, status = 'active') {
         this.public = player.public();
         this.public.status = status;
         this.player = player;
+        this.game = game;
         this.wss = wss;
         this.socket = socket;
         this.token = token;
@@ -24,5 +26,13 @@ module.exports = class ConnectedPlayer {
             this.public.status = 'idle';
             this.wss.publish('player.activity', this.public);
         }, config.idlePlayerTimeout);
+    }
+
+    joinGame(game) {
+        this.game = game;
+    }
+
+    leaveGame() {
+        this.game = null;
     }
 };
