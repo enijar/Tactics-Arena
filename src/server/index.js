@@ -1,18 +1,27 @@
-const {app, server, socket} = require('./bootstrap');
-const database = require('./database/index');
-const config = require('./config/index');
-const Logger = require('./functions/Logger');
-const ResetAllTokens = require('./functions/ResetAllTokens');
+const ClusterWS = require('clusterws');
+const express = require('express');
+const bodyParser = require('body-parser');
+const config = require('./config');
+const db = require('./services/db');
+const socket = require('./socket/index');
 
 (async () => {
-    ResetAllTokens();
+    new ClusterWS({
+        port: config.port,
+        worker: function () {
+            const app = express();
 
-    require('./routes')(app);
-    require('./socket/index')(socket);
+            app.use(bodyParser.json());
+            app.use(express.static(config.path.public));
+            app.use(bodyParser.urlencoded({extended: true}));
 
-    await database.sync();
+            require('./routes')(app);
 
-    server.listen(config.server.port, () => {
-        Logger.info(`Server running on port ${config.server.port}`);
+            this.server.on('request', app);
+            this.wss.setMiddleware('verifyConnection', socket.verify);
+            this.wss.on('connection', socket.connection);
+        },
     });
+
+    await db.sync();
 })();

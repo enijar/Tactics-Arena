@@ -17,10 +17,16 @@ Create a MySQL database, then update the details inside the env.json file.
 Finally run the following commands.
 
 ```bash
+brew install memcached
 npm install
 npm run assets:build
 npm run start
-./bin/migrate.js
+```
+
+Start a memcached server by running the following.
+
+```bash
+memcached
 ```
 
 This will install all the game dependencies, build the assets and server, serve the game,

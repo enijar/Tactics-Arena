@@ -1,5 +1,3 @@
-const players = require('./players');
-
 module.exports = {
-    players
+    connectedPlayers: require('./connectedPlayers'),
 };

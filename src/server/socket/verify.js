@@ -1,27 +1,25 @@
-const state = require('../state/index');
-const Logger = require('../functions/Logger');
-const VerifyUser = require('../functions/VerifyUser');
+const cache = require('../services/cache');
 
-module.exports = (io, socket) => {
-    socket.use((event, next) => {
-        const data = event[1];
+/**
+ * Verify the connection by validating the given player's JWT
+ * matches the cached player's JWT.
+ *
+ * @param {Object} info
+ * @param {Function} next
+ * @returns {Promise<*>}
+ */
+module.exports = async (info, next) => {
+    const player = JSON.parse(decodeURI(info.req.url).replace(/^\/+/, '') || null);
 
-        if (!data.hasOwnProperty('user')) {
-            Logger.info('No user sent with socket event');
-            return;
-        }
+    if (!player) {
+        return next(false);
+    }
 
-        if (!VerifyUser(data.user)) {
-            socket.disconnect();
-            Logger.info(`Unverified user "${data.user.name}"`);
-            return;
-        }
+    // Check cached player.token matched the given player.token
+    const {token} = JSON.parse(await cache.get(`player.${player.id}`, '{token: null}'));
+    if (player.token !== token) {
+        return next(false);
+    }
 
-        // Reset idle timeout for this player
-        if (state.players.hasOwnProperty(socket.id)) {
-            state.players[socket.id].resetIdleTimeout();
-        }
-
-        next();
-    });
+    next(true);
 };

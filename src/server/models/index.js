@@ -1,3 +1,3 @@
 module.exports = {
-    User: require('./User'),
+    Player: require('./Player'),
 };

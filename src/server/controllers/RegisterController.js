@@ -1,52 +1,46 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const Player = require('../models/Player');
 const Validator = require('../../common/Validator/index');
-const Logger = require('../functions/Logger');
-const config = require('../config/index');
+const config = require('../config');
+const cache = require('../services/cache');
 
 module.exports = async (req, res) => {
-    const validation = Validator.validate(req.body, config.common.validators.login(req.body));
+    const validation = Validator.validate(req.body, config.common.validators.register(req.body));
 
     // Validate validation passed
     if (!validation.passed) {
         return res.status(400).json({
             success: false,
-            status: 400,
-            errors: validation.getErrors()
+            errors: validation.getErrors(),
         });
     }
 
     // Validate name doesn't already exist in DB
-    if (await User.findOne({where: {name: req.body.name}})) {
+    if (await Player.findOne({where: {name: req.body.name}})) {
         return res.status(409).json({
             success: false,
-            status: 409,
-            errors: ['Username already taken']
+            errors: ['Name already taken'],
         });
     }
 
     // Store name and hashed password in DB
     try {
-        const password = await bcrypt.hash(req.body.password, config.hashing.saltRounds);
-        let user = await User.create({name: req.body.name, password});
-        const token = jwt.sign({user: user.json()}, config.server.key);
-        user.saveToken(token);
-        user = user.json();
-        user.jwt = token;
+        const password = await bcrypt.hash(req.body.password, config.saltRounds);
+        const player = await Player.create({name: req.body.name, password});
+        const token = jwt.sign({player: player.json()}, config.key);
+        const playerJSON = player.json({token});
 
-        return res.status(200).json({
-            success: true,
-            status: 200,
-            data: user,
-        });
+        // Save playerJSON to the cache with a key of player.id
+        await cache.set(`player.${player.id}`, JSON.stringify(playerJSON), config.tokenExpireTime);
+
+        res.status(200).json({success: true, data: playerJSON});
     } catch (err) {
-        Logger.error(err);
+        console.error(err.message);
 
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
-            status: 400,
-            errors: ['Error, try again later']
+            errors: ['Server error, try again later'],
         });
     }
 };

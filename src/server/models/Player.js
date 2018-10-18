@@ -1,12 +1,6 @@
 const Sequelize = require('sequelize');
-const path = require('path');
-const fs = require('fs');
-const config = require('../config/index');
 
-/**
- * @type {Sequelize.Model}
- */
-module.exports = class User extends Sequelize.Model {
+module.exports = class Player extends Sequelize.Model {
     static init(sequelize, DataTypes) {
         return super.init(
             {
@@ -39,36 +33,15 @@ module.exports = class User extends Sequelize.Model {
                 }
             },
             {
-                tableName: 'users',
+                tableName: 'players',
                 sequelize,
             },
         );
     }
 
-    json() {
-        const values = Object.assign({}, this.get());
+    json(attributes = {}) {
+        const values = Object.assign(attributes, this.get());
         delete values.password;
         return values;
-    }
-
-    /**
-     * Save the given token to the tokens.json file in the storage directory.
-     *
-     * @param {String} token
-     */
-    saveToken(token) {
-        // Create tokensFile file if it doesn't already exist
-        const tokensFile = path.join(config.paths.storage, 'tokens.json');
-        if (!fs.existsSync(tokensFile)) {
-            fs.writeFileSync(tokensFile, JSON.stringify({}), 'utf-8');
-        }
-
-        // Save given user.id and token to tokensFile file
-        const tokens = JSON.parse(fs.readFileSync(tokensFile, 'utf-8')) || {};
-        tokens[this.id] = {
-            name: this.name,
-            jwt: token,
-        };
-        fs.writeFileSync(tokensFile, JSON.stringify(tokens, null, 2));
     }
 };

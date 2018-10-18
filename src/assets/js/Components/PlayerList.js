@@ -8,12 +8,11 @@ export default class PlayerList extends Component {
     };
 
     componentDidMount() {
-        this.props.context.emit('players.get');
-        this.props.context.socket.on('players.update', this.updatePlayers);
+        //
     }
 
     componentWillUnmount() {
-        this.props.context.socket.off('players.update', this.updatePlayers);
+        //
     }
 
     updatePlayers = players => {
