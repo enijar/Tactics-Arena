@@ -7,7 +7,6 @@ const TILE_WIDTH = 50;
 const TILE_DEPTH = 10;
 const TILE_LENGTH = 50;
 const TILE_SPACING = 1;
-
 const TILES = [
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
