@@ -29,6 +29,7 @@
     "sequelize": "^4.39.0",
     "superagent": "^3.8.3",
     "three": "^0.96.0",
+    "three-orbit-controls": "^82.1.0",
     "winston": "^3.1.0"
   },
   "devDependencies": {

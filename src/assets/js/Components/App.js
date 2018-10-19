@@ -3,7 +3,9 @@ import {Route, Switch, withRouter} from "react-router-dom";
 import ClusterWS from "clusterws-client-js";
 import LoginScreen from "../Screens/LoginScreen";
 import LobbyScreen from "../Screens/LobbyScreen";
+import PlayScreen from "../Screens/PlayScreen";
 import Context from "../Context/App";
+import config from "../config";
 
 @withRouter
 export default class App extends Component {
@@ -76,7 +78,8 @@ export default class App extends Component {
     };
 
     async componentDidMount() {
-        if (this.props.location.pathname !== '/') {
+        const {pathname} = this.props.location;
+        if (!config.publicRoutes.includes(pathname) && pathname !== '/') {
             this.props.history.push('/');
         }
         await this.setState({loading: false});
@@ -100,6 +103,7 @@ export default class App extends Component {
                 <Switch>
                     <Route exact path="/" component={LoginScreen}/>
                     <Route exact path="/lobby" component={LobbyScreen}/>
+                    <Route exact path="/play" component={PlayScreen}/>
                 </Switch>
             </Context.Provider>
         );
