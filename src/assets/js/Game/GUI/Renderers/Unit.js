@@ -1,5 +1,6 @@
 import Renderer from "./Renderer";
-import Furgon from "../Unit/Furgon";
+import state from "../state";
+import {UNIT_CLASSES} from "../consts";
 
 export default class Unit extends Renderer {
     units = [];
@@ -10,10 +11,27 @@ export default class Unit extends Renderer {
     }
 
     async loadUnits() {
-        const furgon = new Furgon({col: 1, row: 9});
-        await furgon.load();
-        this.scene.add(furgon.object);
-        this.units.push(furgon);
+        const unitsToLoad = [];
+
+        for (let row = 1; row < state.board.length; row++) {
+            for (let col = 1; col < state.board[row].length; col++) {
+                const tile = state.board[row][col];
+
+                if (!UNIT_CLASSES.hasOwnProperty(tile)) {
+                    continue;
+                }
+
+                // Instantiate new unit class at this col and row
+                unitsToLoad.push(new UNIT_CLASSES[tile]({col, row}));
+            }
+        }
+
+        // Load unit class models
+        for (let i = 0; i < unitsToLoad.length; i++) {
+            await unitsToLoad[i].load();
+            this.scene.add(unitsToLoad[i].object);
+            this.units.push(unitsToLoad[i]);
+        }
     }
 
     tick() {

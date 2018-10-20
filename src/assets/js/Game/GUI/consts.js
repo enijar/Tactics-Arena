@@ -1,3 +1,5 @@
+import Furgon from "./Unit/Furgon";
+
 export const ROWS = 11;
 export const COLS = 11;
 export const TILE_WIDTH = 50;
@@ -17,4 +19,7 @@ export const CAMERA = {
         y: -0.470,
         z: -0.666,
     }
+};
+export const UNIT_CLASSES = {
+    furgon: Furgon
 };
