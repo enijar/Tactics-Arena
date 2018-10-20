@@ -1,3 +1,4 @@
+import {Math} from "three";
 import Renderer from "./Renderer";
 import state from "../state";
 import {UNIT_CLASSES, ROWS, COLS} from "../consts";
@@ -29,6 +30,13 @@ export default class Unit extends Renderer {
         // Load unit class models
         for (let i = 0; i < unitsToLoad.length; i++) {
             await unitsToLoad[i].load();
+
+            // Rotate unit to face camera when past half-way of board (away from camera)
+            if (unitsToLoad[i].col > 6) {
+                console.log('rotate');
+                unitsToLoad[i].object.rotateY(Math.degToRad(180));
+            }
+
             this.scene.add(unitsToLoad[i].object);
             this.units.push(unitsToLoad[i]);
         }
