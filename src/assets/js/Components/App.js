@@ -54,8 +54,11 @@ export default class App extends Component {
     };
 
     connect = async player => {
+        const {common} = config;
+        const {protocol, host, port} = common.socket;
+
         const socket = new ClusterWS({
-            url: `ws://localhost:3000/${encodeURI(JSON.stringify(player))}`,
+            url: `${protocol}://${host}${port !== null ? `:${port}` : ''}/${encodeURI(JSON.stringify(player))}`,
         });
 
         await this.setState({socket});

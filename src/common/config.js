@@ -2,6 +2,11 @@ const Validator = require('./Validator/index');
 const env = require('../../env/common');
 
 module.exports = {
+    socket: {
+        protocol: env.socketProtocol,
+        host: env.socketHost,
+        port: env.socketPort,
+    },
     port: env.port,
     validators: {
         register: data => ({
