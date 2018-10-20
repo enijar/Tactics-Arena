@@ -6,7 +6,7 @@ export default class Light extends Renderer {
     constructor(...props) {
         super(...props);
 
-        this.ambient = new AmbientLight(0xf0f0f0, 0.5);
+        this.ambient = new AmbientLight(0xf0f0f0, 1);
         this.spot = new SpotLight(0x999999, 1);
         this.spotHelper = new SpotLightHelper(this.spot);
 
