@@ -1,6 +1,9 @@
-import {Scene, PerspectiveCamera, WebGLRenderer} from "three";
+import {Scene, PerspectiveCamera, WebGLRenderer, Math} from "three";
+import * as dat from "dat.gui";
+import config from "../../config";
 import Background from "./Renderers/Background";
 import Board from "./Renderers/Board";
+import Unit from "./Renderers/Unit";
 import Light from "./Renderers/Light";
 import Camera from "./Renderers/Camera";
 import Controls from "./Renderers/Controls";
@@ -12,6 +15,7 @@ export default class GUI {
     renderers = [
         new Background(this.scene, this.camera),
         new Board(this.scene, this.camera),
+        new Unit(this.scene, this.camera),
         new Light(this.scene, this.camera),
         new Camera(this.scene, this.camera),
         new Controls(this.scene, this.camera),
@@ -20,6 +24,19 @@ export default class GUI {
     constructor() {
         this.resize();
         window.addEventListener('resize', this.resize);
+
+        if (config.debug) {
+            this.gui = new dat.GUI();
+            this.gui.addFolder('Camera Position');
+            this.gui.add(this.camera.position, 'x', -1000, 1000).step(0.1).listen();
+            this.gui.add(this.camera.position, 'y', -1000, 1000).step(0.1).listen();
+            this.gui.add(this.camera.position, 'z', -2500, 2500).step(0.1).listen();
+
+            this.gui.addFolder('Camera Rotation');
+            this.gui.add(this.camera.rotation, 'x', -Math.degToRad(360), Math.degToRad(360)).step(Math.degToRad(1)).listen();
+            this.gui.add(this.camera.rotation, 'y', -Math.degToRad(360), Math.degToRad(360)).step(Math.degToRad(1)).listen();
+            this.gui.add(this.camera.rotation, 'z', -Math.degToRad(360), Math.degToRad(360)).step(Math.degToRad(1)).listen();
+        }
     }
 
     destroy() {

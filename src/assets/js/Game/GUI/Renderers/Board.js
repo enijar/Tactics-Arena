@@ -11,26 +11,7 @@ import {
 } from "three";
 import Renderer from "./Renderer";
 import config from "../../../config";
-
-const ROWS = 11;
-const COLS = 11;
-const TILE_WIDTH = 50;
-const TILE_DEPTH = 10;
-const TILE_LENGTH = 50;
-const TILE_SPACING = 1;
-const TILES = [
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-];
+import {ROWS, COLS, TILE_WIDTH, TILE_DEPTH, TILE_LENGTH, TILE_SPACING, TILES, BOARD_WIDTH, BOARD_HEIGHT} from "../consts";
 
 export default class Board extends Renderer {
     hoveringTile = null;
@@ -60,11 +41,6 @@ export default class Board extends Renderer {
         this.geometry = new BoxGeometry(TILE_WIDTH, TILE_DEPTH, TILE_LENGTH);
         this.board = new Group();
 
-        const board = {
-            width: ROWS * (TILE_WIDTH + TILE_SPACING),
-            height: COLS * (TILE_LENGTH + TILE_SPACING),
-        };
-
         for (let row = 1; row <= ROWS; row++) {
             for (let col = 1; col <= COLS; col++) {
                 if (TILES[row - 1][col - 1] === 0) {
@@ -80,9 +56,9 @@ export default class Board extends Renderer {
 
                 const tile = new Mesh(this.geometry, material);
                 tile.position.set(
-                    (board.width / 2) - ((TILE_WIDTH + TILE_SPACING) * row),
+                    (BOARD_WIDTH / 2) - ((TILE_WIDTH + TILE_SPACING) * row),
                     0,
-                    (board.width / 2) - ((TILE_LENGTH + TILE_SPACING) * col),
+                    (BOARD_HEIGHT / 2) - ((TILE_LENGTH + TILE_SPACING) * col),
                 );
                 this.board.add(tile);
             }

@@ -15,6 +15,7 @@
     "body-parser": "^1.18.3",
     "clusterws": "^3.2.0",
     "clusterws-client-js": "^3.0.6",
+    "dat.gui": "^0.7.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "md5": "^2.2.1",
@@ -29,6 +30,7 @@
     "sequelize": "^4.39.0",
     "superagent": "^3.8.3",
     "three": "^0.96.0",
+    "three-collada-loader-2": "^1.0.1",
     "three-orbit-controls": "^82.1.0",
     "winston": "^3.1.0"
   },
