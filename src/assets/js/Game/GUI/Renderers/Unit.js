@@ -1,13 +1,13 @@
 import FBXLoader from "three-fbxloader-offical";
 import * as dat from "dat.gui";
-import {AnimationMixer, Clock, LoopOnce} from "three";
+import {AnimationMixer, Clock, LoopOnce, Math} from "three";
 import Renderer from "./Renderer";
 import {TILE_DEPTH} from "../consts";
 import {getTilePosition} from "../utils";
 import config from "../../../config";
 
-const TILE_COL = 6;
-const TILE_ROW = 6;
+const TILE_COL = 1;
+const TILE_ROW = 9;
 
 export default class Unit extends Renderer {
     constructor(...props) {
@@ -23,6 +23,7 @@ export default class Unit extends Renderer {
             const scale = 0.08;
 
             object.position.set(...getTilePosition(TILE_ROW, TILE_COL, TILE_DEPTH / 2));
+            object.rotation.set(0, Math.degToRad(180), 0);
             object.scale.set(scale, scale, scale);
 
             object.mixer = new AnimationMixer(object);
