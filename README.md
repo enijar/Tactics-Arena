@@ -23,14 +23,22 @@ npm run assets:build
 npm run start
 ```
 
+This will install all the game dependencies, build the assets and server, serve the game,
+and run the migrations to setup the database.
+
 Start a memcached server by running the following.
 
 ```bash
 memcached
 ```
 
-This will install all the game dependencies, build the assets and server, serve the game,
-and run the migrations to setup the database.
+Download the model files using this command.
+
+```bash
+./bin/download_models.sh
+```
+
+This might take a while, depending on your Internet speed.
 
 Open [http://localhost:3000](http://localhost:3000) to see the game.
 
