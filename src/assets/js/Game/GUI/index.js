@@ -1,6 +1,4 @@
-import {Scene, PerspectiveCamera, WebGLRenderer, Math} from "three";
-import * as dat from "dat.gui";
-import config from "../../config";
+import {Scene, PerspectiveCamera, WebGLRenderer} from "three";
 import Background from "./Renderers/Background";
 import Board from "./Renderers/Board";
 import Unit from "./Renderers/Unit";
@@ -24,19 +22,6 @@ export default class GUI {
     constructor() {
         this.resize();
         window.addEventListener('resize', this.resize);
-
-        if (config.debug) {
-            this.gui = new dat.GUI();
-            this.gui.addFolder('Camera Position');
-            this.gui.add(this.camera.position, 'x', -1000, 1000).step(0.1).listen();
-            this.gui.add(this.camera.position, 'y', -1000, 1000).step(0.1).listen();
-            this.gui.add(this.camera.position, 'z', -2500, 2500).step(0.1).listen();
-
-            this.gui.addFolder('Camera Rotation');
-            this.gui.add(this.camera.rotation, 'x', -Math.degToRad(360), Math.degToRad(360)).step(Math.degToRad(1)).listen();
-            this.gui.add(this.camera.rotation, 'y', -Math.degToRad(360), Math.degToRad(360)).step(Math.degToRad(1)).listen();
-            this.gui.add(this.camera.rotation, 'z', -Math.degToRad(360), Math.degToRad(360)).step(Math.degToRad(1)).listen();
-        }
     }
 
     destroy() {
