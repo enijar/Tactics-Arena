@@ -6,10 +6,11 @@ Put your tactics to the test against other players in a 1v1, chess-like arena!
 
 To get a local instance of the game up-and-running, follow the setups outlines below.
 
-Create the env.json file from the example.
+Create the env/* files from the examples.
 
 ```bash
-cp env.example.json env.json
+cp env/server.example.json env/server.json
+cp env/common.example.json env/common.json
 ```
 
 Create a MySQL database, then update the details inside the env.json file.
