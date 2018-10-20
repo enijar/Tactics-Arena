@@ -50,8 +50,9 @@ export default class GUI {
     resize = () => {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.shadowMap.enabled = true;
-        this.camera.aspect = window.innerWidth / window.innerHeight;
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
     };
 
     mount(node) {
