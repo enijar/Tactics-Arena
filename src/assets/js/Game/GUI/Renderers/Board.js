@@ -11,7 +11,8 @@ import {
 } from "three";
 import Renderer from "./Renderer";
 import config from "../../../config";
-import {ROWS, COLS, TILE_WIDTH, TILE_DEPTH, TILE_LENGTH, TILE_SPACING, TILES, BOARD_WIDTH, BOARD_HEIGHT} from "../consts";
+import {ROWS, COLS, TILE_WIDTH, TILE_DEPTH, TILE_LENGTH, TILES} from "../consts";
+import {getTilePosition} from "../utils";
 
 export default class Board extends Renderer {
     hoveringTile = null;
@@ -55,11 +56,7 @@ export default class Board extends Renderer {
                 });
 
                 const tile = new Mesh(this.geometry, material);
-                tile.position.set(
-                    (BOARD_WIDTH / 2) - ((TILE_WIDTH + TILE_SPACING) * row),
-                    0,
-                    (BOARD_HEIGHT / 2) - ((TILE_LENGTH + TILE_SPACING) * col),
-                );
+                tile.position.set(...getTilePosition(row, col));
                 this.board.add(tile);
             }
         }
