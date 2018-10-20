@@ -1,8 +1,10 @@
-import ColladaLoader from "three-collada-loader-2";
-import {AnimationMixer, Math, Clock} from "three";
+import FBXLoader from "three-fbxloader-offical";
+import * as dat from "dat.gui";
+import {AnimationMixer, Clock, LoopOnce} from "three";
 import Renderer from "./Renderer";
-import {TILE_WIDTH, TILE_DEPTH} from "../consts";
+import {TILE_DEPTH} from "../consts";
 import {getTilePosition} from "../utils";
+import config from "../../../config";
 
 const TILE_COL = 6;
 const TILE_ROW = 6;
@@ -11,33 +13,66 @@ export default class Unit extends Renderer {
     constructor(...props) {
         super(...props);
 
+        this.gui = new dat.GUI();
         this.clock = new Clock();
-        this.mixer = null;
-        this.loader = new ColladaLoader();
-        this.loader.load('/models/furgon/model.dae', collada => {
-            const animations = collada.animations;
-            const avatar = collada.scene;
-            const scale = TILE_WIDTH / 6;
+        this.animations = {};
+        this.mixers = [];
+        this.loader = new FBXLoader();
+        this.loader.load('/models/furgon/Furgon_Model.fbx', object => {
+            const animations = {};
+            const scale = 0.08;
 
-            console.log('animations', animations);
+            object.position.set(...getTilePosition(TILE_ROW, TILE_COL, TILE_DEPTH / 2));
+            object.scale.set(scale, scale, scale);
 
-            avatar.position.set(...getTilePosition(TILE_ROW, TILE_COL, TILE_DEPTH / 2));
-            avatar.rotation.set(Math.degToRad(-90), 0, 0);
-            avatar.scale.set(scale, scale, scale);
+            object.mixer = new AnimationMixer(object);
+            this.mixers.push(object.mixer);
 
-            avatar.traverse(node => {
-                if (node.isSkinnedMesh) {
-                    node.frustumCulled = false;
+            for (let i = 0; i < object.animations.length; i++) {
+                const name = object.animations[i].name.replace('Armature|', '');
+                this.animations[name] = object.mixer.clipAction(object.animations[i]);
+
+                animations[name] = () => {
+                    this.stopAllAnimations();
+                    this.animations[name].play();
+                };
+
+                if (name === 'attacking') {
+                    this.animations[name].setLoop(LoopOnce);
+                }
+            }
+
+            this.animations.standing.play();
+
+            if (config.debug) {
+                this.gui.add(animations, 'standing');
+                this.gui.add(animations, 'attacking');
+                this.gui.add(animations, 'walking');
+            }
+
+            object.traverse(child => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
                 }
             });
 
-            this.mixer = new AnimationMixer(avatar);
-            this.mixer.clipAction(animations[0]).play();
-            this.scene.add(avatar);
+            this.scene.add(object);
         });
     }
 
+    stopAllAnimations() {
+        for (let animation in this.animations) {
+            if (!this.animations.hasOwnProperty(animation)) {
+                continue;
+            }
+            this.animations[animation].stop();
+        }
+    }
+
     tick() {
-        this.mixer && this.mixer.update(this.clock.getDelta());
+        for (let i = 0; i < this.mixers.length; i++) {
+            this.mixers[i].update(this.clock.getDelta());
+        }
     }
 }
