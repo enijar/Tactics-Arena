@@ -11,12 +11,15 @@ import {
 } from "three";
 import Renderer from "./Renderer";
 import config from "../../../config";
-import {ROWS, COLS, TILE_WIDTH, TILE_DEPTH, TILE_LENGTH, TILES} from "../consts";
+import {ROWS, COLS, TILE_WIDTH, TILE_DEPTH, TILE_LENGTH} from "../consts";
 import {getTilePosition} from "../utils";
+import state from "../state";
 
 export default class Board extends Renderer {
     hoveringTile = null;
-    mouse = new Vector2();
+    mouse = null;
+    raycaster = new Raycaster();
+    loader = new TextureLoader();
     textures = {
         default: null,
         hover: null,
@@ -25,8 +28,6 @@ export default class Board extends Renderer {
     constructor(...props) {
         super(...props);
 
-        this.raycaster = new Raycaster();
-        this.loader = new TextureLoader();
         const defaultTexture = this.loader.load('/img/textures/tile.jpg', texture => {
             texture.wrapS = texture.wrapT = RepeatWrapping;
             texture.offset.set(0, 0);
@@ -44,7 +45,7 @@ export default class Board extends Renderer {
 
         for (let row = 1; row <= ROWS; row++) {
             for (let col = 1; col <= COLS; col++) {
-                if (TILES[row - 1][col - 1] === 0) {
+                if (state.board[row - 1][col - 1] === 0) {
                     continue;
                 }
 
@@ -54,10 +55,17 @@ export default class Board extends Renderer {
                     shininess: 10,
                     map: defaultTexture,
                 });
+                const mesh = new Mesh(this.geometry, material);
+                const tile = {
+                    uuid: mesh.uuid,
+                    col,
+                    row,
+                    mesh,
+                };
 
-                const tile = new Mesh(this.geometry, material);
-                tile.position.set(...getTilePosition(row, col));
-                this.board.add(tile);
+                tile.mesh.position.set(...getTilePosition(row, col));
+                state.tiles.push(tile);
+                this.board.add(tile.mesh);
             }
         }
 
@@ -78,11 +86,19 @@ export default class Board extends Renderer {
     }
 
     handleMouseMove = event => {
+        if (this.mouse === null) {
+            this.mouse = new Vector2();
+        }
+
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
     tick() {
+        if (this.mouse === null) {
+            return;
+        }
+
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
         const intersects = this.raycaster.intersectObjects(this.board.children, true);
@@ -106,5 +122,11 @@ export default class Board extends Renderer {
         this.hoveringTile = intersects[0].object;
         this.hoveringTile.material.map = this.textures.hover;
         document.body.style.cursor = 'pointer';
+
+        const tile = state.tiles.find(tile => tile.uuid === this.hoveringTile.uuid);
+
+        if (tile) {
+            console.log(tile);
+        }
     }
 }

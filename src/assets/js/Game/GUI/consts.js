@@ -4,19 +4,6 @@ export const TILE_WIDTH = 50;
 export const TILE_DEPTH = 10;
 export const TILE_LENGTH = 50;
 export const TILE_SPACING = 2;
-export const TILES = [
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-];
 export const BOARD_WIDTH = ROWS * (TILE_WIDTH + TILE_SPACING);
 export const BOARD_HEIGHT = COLS * (TILE_LENGTH + TILE_SPACING);
 export const CAMERA = {
