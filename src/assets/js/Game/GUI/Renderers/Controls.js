@@ -14,6 +14,6 @@ export default class Controls extends Renderer {
     }
 
     tick() {
-        //
+        this.controls.update();
     }
 }

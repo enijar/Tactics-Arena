@@ -4,4 +4,5 @@ export default {
     common,
     maxLobbyMessages: 100,
     publicRoutes: ['/play'],
+    debug: true,
 }

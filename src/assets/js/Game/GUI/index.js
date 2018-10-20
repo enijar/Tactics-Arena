@@ -4,7 +4,6 @@ import Board from "./Renderers/Board";
 import Light from "./Renderers/Light";
 import Camera from "./Renderers/Camera";
 import Controls from "./Renderers/Controls";
-import Caster from "./Renderers/Caster";
 
 export default class GUI {
     scene = new Scene();
@@ -16,7 +15,6 @@ export default class GUI {
         new Light(this.scene, this.camera),
         new Camera(this.scene, this.camera),
         new Controls(this.scene, this.camera),
-        new Caster(this.scene, this.camera),
     ];
 
     constructor() {

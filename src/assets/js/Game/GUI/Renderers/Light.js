@@ -1,5 +1,6 @@
 import {AmbientLight, SpotLight, SpotLightHelper} from "three";
 import Renderer from "./Renderer";
+import config from "../../../config";
 
 export default class Light extends Renderer {
     constructor(...props) {
@@ -11,7 +12,7 @@ export default class Light extends Renderer {
 
         this.spot.position.set(0, 800, 0);
 
-        this.scene.add(this.spotHelper);
+        config.debug && this.scene.add(this.spotHelper);
         this.scene.add(this.spot);
         this.scene.add(this.ambient);
     }
