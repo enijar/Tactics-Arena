@@ -1,5 +1,6 @@
 {
     "port": 3000,
     "socketProtocol": "ws",
-    "socketHost": "localhost"
+    "socketHost": "localhost",
+    "socketPort": 3000
 }

@@ -5,6 +5,7 @@ module.exports = {
     socket: {
         protocol: env.socketProtocol,
         host: env.socketHost,
+        port: env.socketPort,
     },
     port: env.port,
     validators: {
