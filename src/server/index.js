@@ -8,7 +8,7 @@ const Game = require('./models/state/Game');
 
 (async () => {
     new ClusterWS({
-        port: config.port,
+        port: config.common.port,
         worker: function () {
             const app = express();
 

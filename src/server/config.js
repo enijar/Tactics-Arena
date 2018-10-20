@@ -1,11 +1,10 @@
 const path = require('path');
-const env = require('../../env');
+const env = require('../../env/server');
 const common = require('../common/config');
 const basePath = path.resolve(__dirname, '..', '..');
 
 module.exports = {
     key: env.key,
-    port: env.port,
     path: {
         base: basePath,
         public: path.join(basePath, 'public'),
