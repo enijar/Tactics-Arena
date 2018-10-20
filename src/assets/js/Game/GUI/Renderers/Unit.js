@@ -1,6 +1,6 @@
 import Renderer from "./Renderer";
 import state from "../state";
-import {UNIT_CLASSES} from "../consts";
+import {UNIT_CLASSES, ROWS, COLS} from "../consts";
 
 export default class Unit extends Renderer {
     units = [];
@@ -13,9 +13,9 @@ export default class Unit extends Renderer {
     async loadUnits() {
         const unitsToLoad = [];
 
-        for (let row = 1; row < state.board.length; row++) {
-            for (let col = 1; col < state.board[row].length; col++) {
-                const tile = state.board[row][col];
+        for (let row = 1; row <= ROWS; row++) {
+            for (let col = 1; col <= COLS; col++) {
+                const tile = state.board[row - 1][col - 1];
 
                 if (!UNIT_CLASSES.hasOwnProperty(tile)) {
                     continue;

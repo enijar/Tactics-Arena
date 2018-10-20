@@ -8,18 +8,6 @@ export const TILE_LENGTH = 50;
 export const TILE_SPACING = 2;
 export const BOARD_WIDTH = ROWS * (TILE_WIDTH + TILE_SPACING);
 export const BOARD_HEIGHT = COLS * (TILE_LENGTH + TILE_SPACING);
-export const CAMERA = {
-    position: {
-        x: -397.2,
-        y: 546.2,
-        z: 318.7,
-    },
-    rotation: {
-        x: -1.047,
-        y: -0.470,
-        z: -0.666,
-    }
-};
 export const UNIT_CLASSES = {
     furgon: Furgon
 };
