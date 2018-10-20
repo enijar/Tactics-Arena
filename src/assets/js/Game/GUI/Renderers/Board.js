@@ -33,7 +33,7 @@ const TILES = [
 ];
 
 export default class Board extends Renderer {
-    hoveringObjects = [];
+    hoveringTile = null;
     mouse = new Vector2();
     textures = {
         default: null,
@@ -114,24 +114,24 @@ export default class Board extends Renderer {
 
         const intersects = this.raycaster.intersectObjects(this.board.children, true);
 
-        // Reset hoveringObjects material to default texture map
-        for (let i = 0; i < this.hoveringObjects.length; i++) {
-            this.hoveringObjects[i].material.map = this.textures.default;
+        if (intersects.length === 0) {
+            // Reset hoveringTile texture map and cursor to default
+            if (this.hoveringTile) {
+                this.hoveringTile.material.map = this.textures.default;
+                this.hoveringTile = null;
+                document.body.style.cursor = 'default';
+            }
+            return;
         }
 
-        // Free-up memory
-        delete this.hoveringObjects;
-        this.hoveringObjects = [];
-
-        for (let i = 0; i < intersects.length; i++) {
-            intersects[i].object.material.map = this.textures.hover;
-            this.hoveringObjects.push(intersects[i].object);
+        // Set hoveringTile texture map to default
+        if (this.hoveringTile) {
+            this.hoveringTile.material.map = this.textures.default;
         }
 
-        if (this.hoveringObjects.length > 0) {
-            document.body.style.cursor = 'pointer';
-        } else {
-            document.body.style.cursor = 'default';
-        }
+        // Set hoveringTile texture map to hover
+        this.hoveringTile = intersects[0].object;
+        this.hoveringTile.material.map = this.textures.hover;
+        document.body.style.cursor = 'pointer';
     }
 }
