@@ -18,7 +18,7 @@ export default class Unit extends Renderer {
         this.animations = {};
         this.mixers = [];
         this.loader = new FBXLoader();
-        this.loader.load('/models/furgon/Furgon_Model.fbx', object => {
+        this.loader.load('/models/furgon/model.fbx', object => {
             const animations = {};
             const scale = 0.08;
 
