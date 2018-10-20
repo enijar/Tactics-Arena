@@ -123,10 +123,10 @@ export default class Board extends Renderer {
         this.hoveringTile.material.map = this.textures.hover;
         document.body.style.cursor = 'pointer';
 
-        const tile = state.tiles.find(tile => tile.uuid === this.hoveringTile.uuid);
-
-        if (tile) {
-            console.log(tile);
-        }
+        // const tile = state.tiles.find(tile => tile.uuid === this.hoveringTile.uuid);
+        //
+        // if (tile) {
+        //     console.log(tile);
+        // }
     }
 }
