@@ -1,5 +1,6 @@
 import {Scene, PerspectiveCamera, WebGLRenderer} from "three";
 import config from "../../config";
+import Mouse from "./Actions/Mouse";
 import Background from "./Renderers/Background";
 import Board from "./Renderers/Board";
 import Unit from "./Renderers/Unit";
@@ -17,6 +18,9 @@ export default class GUI {
         new Unit(this.scene, this.camera),
         new Light(this.scene, this.camera),
         new Camera(this.scene, this.camera),
+    ];
+    actions = [
+        new Mouse(this.scene, this.camera),
     ];
 
     constructor() {
@@ -53,6 +57,10 @@ export default class GUI {
 
         for (let i = 0; i < this.renderers.length; i++) {
             this.renderers[i].tick();
+        }
+
+        for (let i = 0; i < this.actions.length; i++) {
+            this.actions[i].tick();
         }
 
         this.renderer.render(this.scene, this.camera);

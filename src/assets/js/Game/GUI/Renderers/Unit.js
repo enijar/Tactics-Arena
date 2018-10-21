@@ -1,9 +1,11 @@
+import * as dat from "dat.gui";
 import {Math} from "three";
 import Renderer from "./Renderer";
 import state from "../state";
 import {UNIT_CLASSES, ROWS, COLS} from "../consts";
 
 export default class Unit extends Renderer {
+    gui = new dat.GUI();
     units = [];
 
     constructor(...props) {
@@ -29,7 +31,7 @@ export default class Unit extends Renderer {
 
         // Load unit class models
         for (let i = 0; i < unitsToLoad.length; i++) {
-            await unitsToLoad[i].load();
+            await unitsToLoad[i].load(this.gui, i);
 
             // Rotate unit to face camera when past half-way of board (away from camera)
             if (unitsToLoad[i].col > 6) {

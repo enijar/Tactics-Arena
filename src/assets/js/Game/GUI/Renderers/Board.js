@@ -1,14 +1,4 @@
-import {
-    RepeatWrapping,
-    Mesh,
-    MeshPhongMaterial,
-    TextureLoader,
-    GridHelper,
-    BoxGeometry,
-    Group,
-    Vector2,
-    Raycaster,
-} from "three";
+import {RepeatWrapping, Mesh, MeshPhongMaterial, TextureLoader, GridHelper, BoxGeometry, Group} from "three";
 import Renderer from "./Renderer";
 import config from "../../../config";
 import {ROWS, COLS, TILE_WIDTH, TILE_DEPTH, TILE_LENGTH} from "../consts";
@@ -16,14 +6,9 @@ import {getTilePosition} from "../utils";
 import state from "../state";
 
 export default class Board extends Renderer {
-    hoveringTile = null;
-    mouse = null;
-    raycaster = new Raycaster();
     loader = new TextureLoader();
-    textures = {
-        default: null,
-        hover: null,
-    };
+    textures = {};
+    effects = {};
 
     constructor(...props) {
         super(...props);
@@ -40,6 +25,8 @@ export default class Board extends Renderer {
         });
         this.textures.default = defaultTexture;
         this.textures.hover = hoverTexture;
+        this.effects.default = this.defaultEffect;
+        this.effects.hover = this.hoverEffect;
         this.geometry = new BoxGeometry(TILE_WIDTH, TILE_DEPTH, TILE_LENGTH);
         this.board = new Group();
 
@@ -55,17 +42,19 @@ export default class Board extends Renderer {
                     shininess: 10,
                     map: defaultTexture,
                 });
-                const mesh = new Mesh(this.geometry, material);
-                const tile = {
-                    uuid: mesh.uuid,
+                const object = new Mesh(this.geometry, material);
+
+                object.position.set(...getTilePosition(row, col));
+                state.objects.push({
+                    uuid: object.uuid,
+                    renderer: 'Board',
+                    name: 'tile',
+                    effects: this.effects,
                     col,
                     row,
-                    mesh,
-                };
-
-                tile.mesh.position.set(...getTilePosition(row, col));
-                state.tiles.push(tile);
-                this.board.add(tile.mesh);
+                    instance: object,
+                });
+                this.board.add(object);
             }
         }
 
@@ -77,56 +66,17 @@ export default class Board extends Renderer {
 
         config.debug && this.scene.add(this.helper);
         this.scene.add(this.board);
-
-        window.addEventListener('mousemove', this.handleMouseMove);
     }
 
-    destroy() {
-        window.removeEventListener('mousemove', this.handleMouseMove);
-    }
+    defaultEffect = object => {
+        object.material.map = this.textures.default;
+    };
 
-    handleMouseMove = event => {
-        if (this.mouse === null) {
-            this.mouse = new Vector2();
-        }
-
-        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    hoverEffect = object => {
+        object.material.map = this.textures.hover;
     };
 
     tick() {
-        if (this.mouse === null) {
-            return;
-        }
-
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-
-        const intersects = this.raycaster.intersectObjects(this.board.children, true);
-
-        if (intersects.length === 0) {
-            // Reset hoveringTile texture map and cursor to default
-            if (this.hoveringTile) {
-                this.hoveringTile.material.map = this.textures.default;
-                this.hoveringTile = null;
-                document.body.style.cursor = 'default';
-            }
-            return;
-        }
-
-        // Set hoveringTile texture map to default
-        if (this.hoveringTile) {
-            this.hoveringTile.material.map = this.textures.default;
-        }
-
-        // Set hoveringTile texture map to hover
-        this.hoveringTile = intersects[0].object;
-        this.hoveringTile.material.map = this.textures.hover;
-        document.body.style.cursor = 'pointer';
-
-        // const tile = state.tiles.find(tile => tile.uuid === this.hoveringTile.uuid);
         //
-        // if (tile) {
-        //     console.log(tile);
-        // }
     }
 }
