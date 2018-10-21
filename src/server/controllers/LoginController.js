@@ -8,13 +8,6 @@ const cache = require('../services/cache');
 
 const unauthorized = async (req, res) => {
     console.info(`Incorrect credentials for player "${req.body.name}"`);
-
-    // Log failed attempt for this user with the request IP
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const loginAttemptsKey = `login:attempts:${md5(`${req.body.name}${ip}`)}`;
-    const loginAttempts = await cache.get(loginAttemptsKey, 0);
-    await cache.set(loginAttemptsKey, loginAttempts + 1, 1000 * 3600);
-
     return res.status(401).json({
         success: false,
         errors: ['Unauthorized'],
@@ -44,11 +37,13 @@ module.exports = async (req, res) => {
         });
     }
 
-    // Validate login attempts has not been exceeded
+    // Log failed attempt for this user with the request IP
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const loginAttemptsKey = `login:attempts:${md5(`${req.body.name}${ip}`)}`;
-    const loginAttempts = await cache.get(loginAttemptsKey, 0);
+    const loginAttempts = Number(await cache.get(loginAttemptsKey, 0)) + 1;
+    await cache.set(loginAttemptsKey, loginAttempts, 1000 * 3600);
 
+    // Validate login attempts has not been exceeded
     if (loginAttempts >= config.loginAttemptsThrottle) {
         // Prevent more login attempts.
         return res.status(429).json({
