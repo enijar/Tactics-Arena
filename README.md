@@ -4,7 +4,7 @@ Put your tactics to the test against other players in a 1v1, chess-like arena!
 
 ### Quick Start
 
-To get a local instance of the game up-and-running, follow the setups outlines below.
+To get a local instance of the game up-and-running, follow the setups outlined below.
 
 Create the env/* files from the examples.
 
