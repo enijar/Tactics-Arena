@@ -5,15 +5,18 @@ import state from "../state";
 export default class Mouse extends Action {
     hoveringObject = null;
     mouse = null;
+    mouseClicked = false;
     raycaster = new Raycaster();
 
     constructor(...props) {
         super(...props);
         window.addEventListener('mousemove', this.handleMouseMove);
+        window.addEventListener('mousedown', this.handleMouseDown);
     }
 
     destroy() {
         window.removeEventListener('mousemove', this.handleMouseMove);
+        window.removeEventListener('mousedown', this.handleMouseDown);
     }
 
     handleMouseMove = event => {
@@ -23,6 +26,10 @@ export default class Mouse extends Action {
 
         this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    handleMouseDown = () => {
+        this.mouseClicked = true;
     };
 
     tick() {
@@ -63,5 +70,17 @@ export default class Mouse extends Action {
             this.hoveringObject.effects.hover(this.hoveringObject.instance);
             document.body.style.cursor = 'pointer';
         }
+
+        if (this.mouseClicked && this.hoveringObject) {
+            const {col, row} = this.hoveringObject;
+            const units = state.objects.filter(object => object.renderer === 'Unit');
+            const clickedUnit = units.find(unit => unit.col === col && unit.row === row);
+
+            if (clickedUnit) {
+                console.log('clicked unit', clickedUnit);
+            }
+        }
+
+        this.mouseClicked = false;
     }
 }
