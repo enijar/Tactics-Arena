@@ -1,5 +1,6 @@
 const state = require('../../state/index');
 const auth = require('../../services/auth');
+const MessageParser = require('../../app/Chat/MessageParser');
 
 /**
  * @param {Object} wss
@@ -13,10 +14,17 @@ module.exports = async (wss, socket, payload) => {
     }
 
     const connectedPlayer = state.connectedPlayers.find(payload.player.socketId);
-
-    connectedPlayer && wss.publish('chat.message', {
+    const {type, text} = await (new MessageParser(payload.player, payload.data)).parse();
+    const response = {
         player: connectedPlayer.public,
         timestamp: Date.now(),
-        text: payload.data,
-    });
+        type,
+        text,
+    };
+
+    if (type === 'command') {
+        return socket.send('chat.message', response);
+    }
+
+    connectedPlayer && wss.publish('chat.message', response);
 };

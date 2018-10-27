@@ -15,6 +15,9 @@ export default class Chat extends SubscriptionComponent {
     };
 
     componentDidMount() {
+        this.openEvents({
+            'chat.message': this.chatMessage,
+        });
         this.openSubscriptions({
             'chat.message': this.chatMessage,
         });
