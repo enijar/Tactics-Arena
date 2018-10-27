@@ -8,9 +8,9 @@ module.exports = class StatCommand extends Command {
     }
 
     async run() {
-        const playerName = String(this.args[0] || '').toLowerCase();
+        const playerName = this.getArg(0);
 
-        if (!playerName || playerName === this.player.name.toLowerCase()) {
+        if (!playerName || playerName.toLowerCase() === this.player.name.toLowerCase()) {
             return `Your stats are ${this.player.stat}`;
         }
 

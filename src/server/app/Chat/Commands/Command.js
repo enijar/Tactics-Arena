@@ -7,4 +7,11 @@ module.exports = class Command {
     async run() {
         return '';
     }
+
+    getArg(index, defaultValue = null) {
+        if (!this.args[index]) {
+            return defaultValue;
+        }
+        return this.args[index];
+    }
 };
