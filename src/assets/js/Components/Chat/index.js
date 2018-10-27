@@ -1,10 +1,11 @@
-import React, {Component, createRef} from "react";
+import React, {createRef} from "react";
 import AppContext from "../../Decorators/AppContext";
+import SubscriptionComponent from "../SubscriptionComponent";
 import config from "../../config";
 import Message from "./Message";
 
 @AppContext
-export default class Chat extends Component {
+export default class Chat extends SubscriptionComponent {
     messages = createRef();
 
     state = {
@@ -14,12 +15,14 @@ export default class Chat extends Component {
     };
 
     componentDidMount() {
-        //
+        this.openSubscriptions({
+            'chat.lobby': this.chatLobby,
+        });
     }
 
-    componentWillUnmount() {
-        //
-    }
+    chatLobby = message => {
+        return this.appendMessage(message);
+    };
 
     appendMessage = async message => {
         const {messages} = this.state;
@@ -42,11 +45,16 @@ export default class Chat extends Component {
             return;
         }
 
-        this.setState({message: ''});
+        this.props.context.socket.send('chat.lobby', {
+            player: this.props.context.player,
+            message,
+        });
+
+        return this.setState({message: ''});
     };
 
     handleChange = event => {
-        this.setState({message: event.target.value});
+        return this.setState({message: event.target.value});
     };
 
     scrollToBottom() {
@@ -65,10 +73,7 @@ export default class Chat extends Component {
             <div className="Chat">
                 <div className="Chat__messages" ref={this.messages} onScroll={this.handleScroll}>
                     {this.state.messages.map((message, index) => (
-                        <Message
-                            key={index}
-                            message={message}
-                        />
+                        <Message key={index} message={message}/>
                     ))}
                 </div>
 
