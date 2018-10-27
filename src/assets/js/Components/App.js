@@ -18,14 +18,34 @@ export default class App extends Component {
         subscriptions: {},
     };
 
+    wss = {
+        send: (event, data = null) => {
+            const payload = {
+                player: this.state.player,
+                data,
+            };
+
+            return this.state.socket.send(event, payload);
+        },
+        on: (event, callback) => {
+            return this.state.socket.on(event, callback);
+        },
+        subscribe: channel => {
+            return this.state.socket.subscribe(channel);
+        },
+        close: channel => {
+            return this.state.socket.close(channel);
+        },
+    };
+
     getContext() {
         return {
             loading: this.state.loading,
             connected: this.state.connected,
-            socket: this.state.socket,
             floor: this.state.floor,
             player: this.state.player,
             subscriptions: this.state.subscriptions,
+            wss: this.wss,
             connect: this.connect,
             disconnect: this.disconnect,
             changeFloor: this.changeFloor,
@@ -36,7 +56,7 @@ export default class App extends Component {
 
     addSubscription = (channel, callback) => {
         const {subscriptions} = this.state;
-        const subscription = this.state.socket.subscribe(channel);
+        const subscription = this.wss.subscribe(channel);
         subscription.watch(callback);
         subscriptions[channel] = subscription;
         this.setState({subscriptions});
@@ -63,16 +83,16 @@ export default class App extends Component {
 
         await this.setState({socket});
 
-        this.state.socket.on('connect', () => {
-            this.state.socket.send('connect', player);
+        this.wss.on('connect', () => {
+            this.wss.send('connect', player);
 
-            this.state.socket.on('connected', async player => {
+            this.wss.on('connected', async player => {
                 await this.setState({connected: true, player});
                 this.props.history.push('/lobby');
             });
         });
 
-        this.state.socket.on('disconnect', () => this.disconnect());
+        this.wss.on('disconnect', this.disconnect);
     };
 
     disconnect = async () => {
@@ -88,11 +108,11 @@ export default class App extends Component {
         await this.setState({loading: false});
 
         window.addEventListener('mousedown', () => {
-            this.state.connected && this.state.socket.send('player.activity', this.state.player);
+            this.state.connected && this.wss.send('player.activity');
         });
 
         window.addEventListener('keydown', () => {
-            this.state.connected && this.state.socket.send('player.activity', this.state.player);
+            this.state.connected && this.wss.send('player.activity');
         });
     }
 

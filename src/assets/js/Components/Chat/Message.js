@@ -9,6 +9,8 @@ export default class Message extends Component {
     render() {
         const {message} = this.props;
 
+        console.log(message);
+
         return (
             <div className="Chat__message">
                 <div className={`Chat__message-user Chat__message-user--${message.player.type}`}>

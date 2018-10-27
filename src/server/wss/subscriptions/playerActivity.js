@@ -1,11 +1,18 @@
 const state = require('../../state/index');
 const auth = require('../../services/auth');
 
-module.exports = async player => {
-    if (!await auth.check(player)) {
+/**
+ *
+ * @param {Object} wss
+ * @param {Object} socket
+ * @param {Object} payload
+ * @returns {Promise<void>}
+ */
+module.exports = async (wss, socket, payload) => {
+    if (!await auth.check(payload.player)) {
         return;
     }
 
-    player = state.connectedPlayers.find(player.socketId);
+    const player = state.connectedPlayers.find(socket.id);
     player && player.resetIdleTimeout();
 };

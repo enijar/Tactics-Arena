@@ -38,7 +38,7 @@ export default class GameList extends SubscriptionComponent {
     }
 
     setAvatar = (position, game) => () => {
-        this.props.context.socket.send('game.activity', {position, game, player: this.props.context.player});
+        this.props.context.wss.send('game.activity', {position, game});
     };
 
     render() {

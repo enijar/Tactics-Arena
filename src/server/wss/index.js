@@ -1,7 +1,19 @@
+const events = {
+    'connect': require('./client/connect'),
+    'disconnect': require('./client/disconnect'),
+    'player.activity': require('./subscriptions/playerActivity'),
+    'game.activity': require('./subscriptions/gameActivity'),
+    'chat.lobby': require('./subscriptions/chat/lobby'),
+};
+
 module.exports = (wss, socket) => {
-    socket.on('connect', player => require('./client/connect')(wss, socket, player));
-    socket.on('disconnect', () => require('./client/disconnect')(wss, socket));
-    socket.on('player.activity', player => require('./subscriptions/playerActivity')(player));
-    socket.on('game.activity', data => require('./subscriptions/gameActivity')(wss, data));
-    socket.on('chat.lobby', data => require('./subscriptions/chat/lobby')(wss, data));
+    for (let event in events) {
+        if (!events.hasOwnProperty(event)) {
+            continue;
+        }
+
+        socket.on(event, (payload = {}) => {
+            events[event](wss, socket, payload);
+        });
+    }
 };

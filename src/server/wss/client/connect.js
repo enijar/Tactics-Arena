@@ -5,10 +5,12 @@ const Player = require('../../models/Player');
 /**
  * @param {Object} wss
  * @param {Object} socket
- * @param {Object} player
+ * @param {Object} payload
  * @returns {Promise<*>}
  */
-module.exports = async (wss, socket, player) => {
+module.exports = async (wss, socket, payload) => {
+    let player = payload.data;
+
     try {
         const {name, token} = player;
         player = await Player.findOne({where: {name}});

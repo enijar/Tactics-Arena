@@ -45,10 +45,7 @@ export default class Chat extends SubscriptionComponent {
             return;
         }
 
-        this.props.context.socket.send('chat.lobby', {
-            player: this.props.context.player,
-            message,
-        });
+        this.props.context.wss.send('chat.lobby', message);
 
         return this.setState({message: ''});
     };

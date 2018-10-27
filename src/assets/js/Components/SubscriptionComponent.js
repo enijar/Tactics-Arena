@@ -9,7 +9,7 @@ export default class SubscriptionComponent extends Component {
             if (!events.hasOwnProperty(event)) {
                 continue;
             }
-            this.props.context.socket.on(event, events[event]);
+            this.props.context.wss.on(event, events[event]);
         }
     }
 
@@ -27,7 +27,7 @@ export default class SubscriptionComponent extends Component {
             if (!this.events.hasOwnProperty(event)) {
                 continue;
             }
-            this.props.context.socket.close(event, this.events[event]);
+            this.props.context.wss.close(event, this.events[event]);
         }
     }
 

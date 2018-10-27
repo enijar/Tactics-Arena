@@ -1,15 +1,22 @@
 const state = require('../../../state/index');
 const auth = require('../../../services/auth');
 
-module.exports = async (wss, {player, message}) => {
-    if (!await auth.check(player)) {
+/**
+ * @param {Object} wss
+ * @param {Object} socket
+ * @param {Object} payload
+ * @returns {Promise<void>}
+ */
+module.exports = async (wss, socket, payload) => {
+    if (!await auth.check(payload.player)) {
         return;
     }
 
-    const connectedPlayer = state.connectedPlayers.find(player.socketId);
+    const connectedPlayer = state.connectedPlayers.find(payload.player.socketId);
 
-    wss.publish('chat.lobby', {
+    connectedPlayer && wss.publish('chat.lobby', {
         player: connectedPlayer.public,
-        text: message,
+        timestamp: Date.now(),
+        text: payload.data,
     });
 };
