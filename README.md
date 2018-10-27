@@ -13,42 +13,34 @@ cp env/server.example.json env/server.json
 cp env/common.example.json env/common.json
 ```
 
-Create a MySQL database, then update the details inside the env.json file.
+Create a MySQL database, then update the details inside the env/server.json file.
 
-Finally run the following commands.
+Finally run the following command.
 
 ```bash
+# Install memcached for session management
 brew install memcached
+
+# Install dependencies
 npm install
+
+# Build frontend assets
 npm run assets:build
+
+# Download model files
+./bin/download_models.sh
+
+# Start server
 npm run start
 ```
 
-This will install all the game dependencies, build the assets and server, serve the game,
-and run the migrations to setup the database.
-
-Start a memcached server by running the following.
-
-```bash
-memcached
-```
-
-Download the model files using this command.
-
-```bash
-./bin/download_models.sh
-```
-
-This might take a while, depending on your Internet speed.
-
-Open [http://localhost:3000](http://localhost:3000) to see the game.
+Open [http://localhost:3000](http://localhost:3000) to see the game running.
 
 ### Contributing
 
 You won't want to keep running the commands to manually build the assets and server, so run 
-the following commands to set listeners for changes on the assets and server files.
+the following command to watch files for changes during development.
 
 ```bash
-npm run assets:watch
-npm run server:watch
+npm run dev
 ```

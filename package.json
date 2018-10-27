@@ -7,6 +7,7 @@
     "assets:watch": "NODE_ENV=development npx webpack --mode development --watch --progress --hide-modules",
     "assets:build": "NODE_ENV=production npx webpack --mode production --progress --hide-modules",
     "server:watch": "npx nodemon --watch src/server --watch src/common src/server",
+    "dev": "./bin/run_dev.sh",
     "start": "node src/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
