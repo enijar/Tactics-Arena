@@ -16,11 +16,11 @@ export default class Chat extends SubscriptionComponent {
 
     componentDidMount() {
         this.openSubscriptions({
-            'chat.lobby': this.chatLobby,
+            'chat.message': this.chatMessage,
         });
     }
 
-    chatLobby = message => {
+    chatMessage = message => {
         return this.appendMessage(message);
     };
 
@@ -45,7 +45,7 @@ export default class Chat extends SubscriptionComponent {
             return;
         }
 
-        this.props.context.wss.send('chat.lobby', message);
+        this.props.context.wss.send('chat.message', message);
 
         return this.setState({message: ''});
     };

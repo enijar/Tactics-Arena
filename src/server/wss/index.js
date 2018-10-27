@@ -3,7 +3,7 @@ const events = {
     'disconnect': require('./client/disconnect'),
     'player.activity': require('./subscriptions/playerActivity'),
     'game.activity': require('./subscriptions/gameActivity'),
-    'chat.lobby': require('./subscriptions/chat/lobby'),
+    'chat.message': require('./subscriptions/chatMessage'),
 };
 
 module.exports = (wss, socket) => {

@@ -1,5 +1,5 @@
-const state = require('../../../state/index');
-const auth = require('../../../services/auth');
+const state = require('../../state/index');
+const auth = require('../../services/auth');
 
 /**
  * @param {Object} wss
@@ -14,7 +14,7 @@ module.exports = async (wss, socket, payload) => {
 
     const connectedPlayer = state.connectedPlayers.find(payload.player.socketId);
 
-    connectedPlayer && wss.publish('chat.lobby', {
+    connectedPlayer && wss.publish('chat.message', {
         player: connectedPlayer.public,
         timestamp: Date.now(),
         text: payload.data,
