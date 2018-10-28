@@ -14,6 +14,7 @@ export default class App extends Component {
         connected: false,
         socket: null,
         player: null,
+        command: null,
         floor: 1,
         subscriptions: {},
     };
@@ -45,14 +46,20 @@ export default class App extends Component {
             floor: this.state.floor,
             player: this.state.player,
             subscriptions: this.state.subscriptions,
+            command: this.state.command,
             wss: this.wss,
             connect: this.connect,
             disconnect: this.disconnect,
             changeFloor: this.changeFloor,
             addSubscription: this.addSubscription,
             removeSubscription: this.removeSubscription,
+            processCommand: this.processCommand,
         };
     }
+
+    processCommand = command => {
+        return this.setState({command});
+    };
 
     addSubscription = (channel, callback) => {
         const {subscriptions} = this.state;
