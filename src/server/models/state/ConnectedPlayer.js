@@ -9,6 +9,7 @@ module.exports = class ConnectedPlayer {
         this.game = game;
         this.wss = wss;
         this.socket = socket;
+        this.status = 'connected';
         this.token = token;
         this.timeout = null;
         this.resetIdleTimeout();
@@ -30,9 +31,11 @@ module.exports = class ConnectedPlayer {
 
     joinGame(game) {
         this.game = game;
+        this.public.status = 'in-game';
     }
 
     leaveGame() {
         this.game = null;
+        this.public.status = 'active';
     }
 };
