@@ -16,7 +16,7 @@ module.exports = class MessageParser {
             };
         }
 
-        const parsed = /^\/(\w+)\s?(.*)/.exec(text);
+        const parsed = /^\/(\w+)\s?(.*)/.exec(this.message);
         const command = parsed[1];
         const args = !parsed[2] ? [] : parsed[2].split(' ');
 
