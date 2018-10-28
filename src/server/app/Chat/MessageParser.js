@@ -1,6 +1,9 @@
 const commands = require('./Commands/index');
-
-const returnCommand = text => ({type: 'command', text});
+const returnCommand = (text, command = null) => ({
+    type: 'command',
+    text,
+    command,
+});
 
 module.exports = class MessageParser {
     constructor(player, message = '') {
@@ -42,6 +45,9 @@ module.exports = class MessageParser {
             return returnCommand('Invalid command');
         }
 
-        return returnCommand(await chatCommand.run());
+        return returnCommand(
+            await chatCommand.run(),
+            command,
+        );
     }
 };
