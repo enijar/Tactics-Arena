@@ -23,7 +23,13 @@ export default class Chat extends SubscriptionComponent {
         });
     }
 
-    chatMessage = message => {
+    chatMessage = async message => {
+        if (message.command) {
+            await this.props.context.processCommand(message.command);
+        }
+
+        console.log('Chat.chatMessage -> message', message);
+
         return this.appendMessage(message);
     };
 
