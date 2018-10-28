@@ -14,11 +14,12 @@ module.exports = async (wss, socket, payload) => {
     }
 
     const connectedPlayer = state.connectedPlayers.find(payload.player.socketId);
-    const {type, text} = await (new MessageParser(payload.player, payload.data)).parse();
+    const {type, text, command} = await (new MessageParser(payload.player, payload.data)).parse();
     const response = {
         player: connectedPlayer.public,
         timestamp: Date.now(),
         type,
+        command,
         text,
     };
 
