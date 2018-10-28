@@ -13,7 +13,7 @@ export default class Message extends Component {
             <div className="Chat__message">
                 {message.type !== 'command' && (
                     <div className={`Chat__message-user Chat__message-user--${message.player.type}`}>
-                        {message.player.name}&nbsp;:&nbsp;
+                        {message.player.name}:&nbsp;&nbsp;
                     </div>
                 )}
                 <div className={`Chat__message-message Chat__message-message--${message.type}`}>
