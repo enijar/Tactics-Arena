@@ -40,6 +40,14 @@
         color: color(message-command);
         font-weight: bold;
       }
+
+      &--gold {
+        color: color(message-gold);
+      }
+
+      &--gray {
+        color: color(message-gray);
+      }
     }
   }
 
